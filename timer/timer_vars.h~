@@ -1,7 +1,0 @@
-#ifndef timer_vars
-#define timer_vars
-uint32_t HSI();
-uint32_t HSE();
-uint32_t LSI();
-uint32_t Sample_Clock_Speed(void(*clock)());
-#endif

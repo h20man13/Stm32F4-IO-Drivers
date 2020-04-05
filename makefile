@@ -1,5 +1,5 @@
 io = io/gpio.c
-timer = timer/rcc.c timer/timer_vars.c
+timer = timer/timer_vars.c
 src =  main.c
 TARGET = main
 # Define the linker script location and chip architecture.

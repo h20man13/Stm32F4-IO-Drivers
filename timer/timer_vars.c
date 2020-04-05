@@ -148,7 +148,7 @@ void ADC1(uint32_t speed){
       }while(1);
     }
     else if(h1 < speed){
-       int change = speed - h1;
+      int change = speed - h1;
       do{
 	int save_change = change;
         int value = (((((*(cfg_point) >> 16) & 0b11) + 1);

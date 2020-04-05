@@ -118,31 +118,107 @@ uint32_t APB1(){
 uint32_t ADC1(){
   uint32_t* cfg_point = (uint32_t*)0x40012304;
   uint32_t src = Sample_Clock_Speed(APB2);
-  uint32 ADCPRE = 1 << ((((*(cfg_point) >> 9) & 0b11) + 1);
+  uint32 ADCPRE = 1 << ((((*(cfg_point) >> 16) & 0b11) + 1);
   return src / ADCPRE; 
 }
 
 //Mutator Methods
 void ADC1(uint32_t speed){
     uint32_t* cfg_point = (uint32_t*)0x40012304;
-    uint32_t hl = sample_Clock_Speed(ADC1);
+    uint32_t hl = Sample_Clock_Speed(ADC1);
     if(h1 > speed)
     {
       int change = h1 - speed;
-      while(1){
-	
-      }
+      do{
+	int save_change = change;
+        int value = (((((*(cfg_point) >> 16) & 0b11) - 1);
+	if(value < 0){
+	  break;
+	}
+	*cfg_point &= (~(0b11 << 16));
+	*cfg_point |= value << 16;
+	h1 = Sample_Clock_Speed(ADC1);
+        change = (h1 > speed) ? h1 - speed : speed - h1;
+	if(change >= save_change){
+	  int value = (((((*(cfg_point) >> 16) & 0b11) + 1);
+	  *cfg_point &= (~(0b11 << 16));
+	  *cfg_point |= value << 16;
+	  break;
+	}
+      }while(1);
     }
-    else if(h1 < speed)
-      
+    else if(h1 < speed){
+       int change = speed - h1;
+      do{
+	int save_change = change;
+        int value = (((((*(cfg_point) >> 16) & 0b11) + 1);
+	if(value > 3){
+	  break;
+	}
+	*cfg_point &= (~(0b11 << 16));
+	*cfg_point |= value << 16;
+	h1 = Sample_Clock_Speed(ADC1);
+	change = (speed > h1) ? speed - h1 : h1 - speed;
+	if(change >= save_change){
+	  int value = (((((*(cfg_point) >> 16) & 0b11) - 1);
+	  *cfg_point &= (~(0b11 << 16));
+	  *cfg_point |= value << 16;
+	  break;
+	}
+      }while(1);
+    }
+}
+void APB1(uint32_t speed){
+    uint32_t* cfg_point = (uint32_t*)0x40033808;
+    uint32_t hl = Sample_Clock_Speed(APB1);
+    if(h1 > speed)
+    {
+      int change = h1 - speed;
+      do{
+	int save_change = change;
+        int value = (((((*(cfg_point) >> 16) & 0b11) - 1);
+	if(value < 0){
+	  break;
+	}
+	*cfg_point &= (~(0b11 << 16));
+	*cfg_point |= value << 16;
+	h1 = Sample_Clock_Speed(ADC1);
+        change = (h1 > speed) ? h1 - speed : speed - h1;
+	if(change >= save_change){
+	  int value = (((((*(cfg_point) >> 16) & 0b11) + 1);
+	  *cfg_point &= (~(0b11 << 16));
+	  *cfg_point |= value << 16;
+	  break;
+	}
+      }while(1);
+    }
+    else if(h1 < speed){
+       int change = speed - h1;
+      do{
+	int save_change = change;
+        int value = (((((*(cfg_point) >> 16) & 0b11) + 1);
+	if(value > 3){
+	  break;
+	}
+	*cfg_point &= (~(0b11 << 16));
+	*cfg_point |= value << 16;
+	h1 = Sample_Clock_Speed(ADC1);
+	change = (speed > h1) ? speed - h1 : h1 - speed;
+	if(change >= save_change){
+	  int value = (((((*(cfg_point) >> 16) & 0b11) - 1);
+	  *cfg_point &= (~(0b11 << 16));
+	  *cfg_point |= value << 16;
+	  break;
+	}
+      }while(1);
     }
 }
 
 
 //Holder Methods
 
-void Change_MUX(uint32_t (*MUX)(), uint32_t(*SRC)()){
-    (*MUX) = src;
+void Change_MUX(uint32_t (*MUX)(), uint32_t (*SRC)()){
+  MUX = src;
 }
 
 uint32_t Sample_Prescaler(prescalar_val (*prescaler)()){

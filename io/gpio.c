@@ -2,7 +2,6 @@
 #include <stdbool.h>
 
 #include "gpio.h"
-#include "../timer/rcc.h"
 
 //sample gpio fuctions
 void Init_GPIO(GPIO_Struct* const gstruct, const GPIO addr, const GPIO_Pin p){

@@ -4,7 +4,6 @@
 #include <stdint.h>
 #include <stdbool.h>
 
-#include "../timer/rcc.h"
 #include "../shared.h"
 
 typedef enum{

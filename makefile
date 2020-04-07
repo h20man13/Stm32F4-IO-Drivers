@@ -1,5 +1,6 @@
 io = io/gpio.c
 timer = timer/timer_vars.c
+rand = rand/rand.c
 src =  main.c
 TARGET = main
 # Define the linker script location and chip architecture.
@@ -42,7 +43,7 @@ LFLAGS += -lgcc
 LFLAGS += -T$(LSCRIPT)
 VECT_TBL = ./p2_vtable.S
 AS_SRC   = ./bootloader.S
-C_SRC    = $(io) $(timer) $(src)
+C_SRC    = $(io) $(timer) $(rand) $(src)
 OBJS =  $(VECT_TBL:.S=.o)
 OBJS += $(AS_SRC:.S=.o)
 OBJS += $(C_SRC:.c=.o)

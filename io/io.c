@@ -9,5 +9,5 @@ void out(uint32_t* addr, uint32_t size, uint32_t shift, uint32_t data){
 
 uint32_t in(uit32_t* addr, uint32_t size, uint32_t shift){
   uint32_t save = (1 << size) - 1;
-  return (*addr >> shift) | save;
+  return (*addr >> shift) & save;
 }

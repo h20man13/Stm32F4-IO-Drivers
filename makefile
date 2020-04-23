@@ -1,5 +1,5 @@
 io = io/gpio.c
-timer = timer/timer_vars.c
+timer = timer/timer_pre.c timer/timer_src.c timer/timer_speed.c
 rand = rand/rand.c
 src =  main.c
 TARGET = main

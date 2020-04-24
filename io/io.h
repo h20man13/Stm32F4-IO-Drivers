@@ -4,6 +4,7 @@
 #include <stdint.h>
 
 void out(uint32_t*, uint32_t, uint32_t, uint32_t);
+void clear(uint32_t*, uint32_t, uint32_t);
 uint32_t in(uint32_t*, uint32_t, uint32_t);
 
 #endif

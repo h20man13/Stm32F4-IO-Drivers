@@ -2,6 +2,7 @@
 #include <stdbool.h>
 
 #include "gpio.h"
+#include "io.h"
 
 //sample gpio fuctions
 void Init_GPIO(GPIO_Struct* const gstruct, const GPIO addr, const GPIO_Pin p){
@@ -16,34 +17,30 @@ void Init_GPIO(GPIO_Struct* const gstruct, const GPIO addr, const GPIO_Pin p){
 }
 
 void Disable_GPIO(GPIO_Struct* base){
-    *base -> MODER &= ~(0b11 << (base -> PIN_NUM * 2));
-    *base -> OTYPER &= ~(1 << base -> PIN_NUM);
-    *base -> OSPEEDR &= ~(0b11 << (base -> PIN_NUM * 2));
-    *base -> PUPDR &= ~(0b11 << (base -> PIN_NUM * 2));
-    *base -> ODR &= ~(1 << base -> PIN_NUM);
+    uint32_t num = base -> PIN_NUM * 2;
+    clear(base -> MODER, 2, num);
+    clear(base -> OTYPER, 1, base -> PIN_NUM);
+    clear(base -> OSPEEDR, 2, num);
+    clear(base -> PUPDR, 2, num);
+    clear(base -> ODR, 1, base -> PIN_NUM);
     Configure_AHB1_ENR((ENABLE_AHB1)(((uint32_t)base -> MODER - 40020000)/0x400), off);
 }
 //Create mode functions (mode == void)
 void Configure_MODER(GPIO_Struct* const base, const MODER value){
-  *base -> MODER &= ~(0b11 << (base -> PIN_NUM * 2));
-  *base -> MODER |= (value << (base -> PIN_NUM * 2));
+  out(base -> MODER, 2, base -> PIN_NUM * 2, value);
 }
 void Configure_OTYPER(GPIO_Struct* const base, const OTYPER value){
-  *base -> OTYPER &= ~(1 << base -> PIN_NUM);
-  *base -> OTYPER |= (value << base -> PIN_NUM);
+  out(base -> OTYPER, 1, base -> PIN_NUM, value);
 }
 void Configure_OSPEEDR(GPIO_Struct* const base, const OSPEEDR value){
-  *base -> OSPEEDR &= ~(0b11 << (base -> PIN_NUM * 2));
-  *base -> OSPEEDR |= (value << (base -> PIN_NUM * 2));
+  out(base -> OSPEEDR, 2, base -> PIN_NUM * 2, value);
 }
 void Configure_PUPDR(GPIO_Struct* const base, const PUPDR value){
-  *base -> PUPDR &= ~(0b11 << (base -> PIN_NUM * 2));
-  *base -> PUPDR |= (value << (base -> PIN_NUM * 2));
+  out(base -> PUPDR, 2, base -> PIN_NUM * 2, value);
 }
 void Configure_ODR(GPIO_Struct* const base, const STATE value){
-  *base -> ODR &= ~(1 << base -> PIN_NUM);
-  *base -> ODR |= (value << base -> PIN_NUM);
+  out(base -> ODR, 1, base -> PIN_NUM, value);
 }
 bool Sample_IDR(GPIO_Struct* const base){
-  return (bool)(*base -> IDR >> base -> PIN_NUM) & 1;
+  return in(base -> IDR, 1, base -> PIN_NUM);
 }

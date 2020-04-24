@@ -7,12 +7,12 @@ typedef uint32_t clk_speed;
 
 //helper methods
 
-inline clk_speed Sample_Clock_Speed(clk_speed (*func)());
+inline clk_speed Sample_Clock_Speed(clk_speed(*)());
 
 //Accesor Methods
 
 clk_speed PLL();
-inline clk_speed SYS_CLK();
+clk_speed SYS_CLK();
 clk_speed AHB1();
 clk_speed APB2();
 clk_speed APB1();

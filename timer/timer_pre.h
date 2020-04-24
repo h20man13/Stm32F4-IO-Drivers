@@ -5,8 +5,8 @@
 
 typedef uint32_t pre_val;
 
-inline pre_val Sample_Prescalar(pre_val (*func)());
-inline void Configure_Prescalar(void (*func)());
+inline pre_val Sample_Prescalar(pre_val(*)());
+inline void Configure_Prescalar(void(*)());
 
 pre_val PLLN();
 pre_val PLLP();

@@ -14,7 +14,7 @@ inline clk_speed Sample_Clock_Speed(clk_speed(*)());
 clk_speed PLL();
 clk_speed SYS_CLK();
 clk_speed AHB1();
-clk_speed APB2();
+clk_speed APB2_get();
 clk_speed APB1();
 clk_speed ADC1();
 

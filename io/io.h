@@ -5,6 +5,6 @@
 
 void out(void*, uint32_t, uint32_t, uint32_t);
 void clear(void*, uint32_t, uint32_t);
-uint32_t in(volatile void*, uint32_t, uint32_t);
+uint32_t in(void*, uint32_t, uint32_t);
 
 #endif

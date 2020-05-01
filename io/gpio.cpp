@@ -42,5 +42,5 @@ void Configure_ODR(GPIO_Struct* const base, const STATE value){
   out(base -> ODR, 1, base -> PIN_NUM, value);
 }
 bool Sample_IDR(GPIO_Struct* const base){
-  return in(base -> IDR, 1, base -> PIN_NUM);
+  return in((uint32_t*)base -> IDR, 1, base -> PIN_NUM);
 }

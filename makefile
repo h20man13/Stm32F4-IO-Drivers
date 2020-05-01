@@ -1,7 +1,7 @@
 io = io/gpio.cpp io/io.cpp
 timer = timer/timer_pre.cpp timer/timer_src.cpp timer/timer_speed.cpp
 rand = rand/rand.cpp
-src =  main.c
+src =  main.cpp
 TARGET = main
 # Define the linker script location and chip architecture.
 LD_SCRIPT = p2.ld
@@ -46,7 +46,7 @@ AS_SRC   = ./bootloader.S
 C_SRC    = $(io) $(timer) $(rand) $(src)
 OBJS =  $(VECT_TBL:.S=.o)
 OBJS += $(AS_SRC:.S=.o)
-OBJS += $(C_SRC:.c=.o)
+OBJS += $(C_SRC:.cpp=.o)
 .PHONY: all
 all: $(TARGET).bin
 %.o: %.S

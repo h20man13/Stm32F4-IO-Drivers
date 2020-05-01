@@ -12,19 +12,19 @@ inline void Configure_Prescalar(void (*func)()){
 
 //sample funcs
 pre_val PLLN(){
-  return in(pll_point, 9, 6);
+  return in((uint32_t*)pll_point, 9, 6);
 }
 
 pre_val PLLP(){
-  return 1 << (in(pll_point, 2, 16) + 1);
+  return 1 << (in((uint32_t*)pll_point, 2, 16) + 1);
 }
 
 pre_val PLLM(){
-  return in(pll_point, 6, 0);
+  return in((uint32_t*)pll_point, 6, 0);
 }
 
 pre_val AHB1(){
-  pre_val HPRE = in(sys_point, 4, 4) - 0b1001;
+  pre_val HPRE = in((uint32_t*)sys_point, 4, 4) - 0b1001;
   if(HPRE >= 4){
     HPRE++;
   }
@@ -32,35 +32,35 @@ pre_val AHB1(){
 }
 
 pre_val APB1(){
-  return 1 << (in(sys_point, 3, 9) - 0b101);
+  return 1 << (in((uint32_t*)sys_point, 3, 9) - 0b101);
 }
 
 pre_val APB2(){
-  return 1 << (in(sys_point, 3, 12) - 0b101);
+  return 1 << (in((uint32_t*)sys_point, 3, 12) - 0b101);
 }
 
 //other funcs
 
 void PLLN(pre_val data){
-  out(pll_point, 9, 6, data);
+  out((uint32_t*)pll_point, 9, 6, data);
 }
 
 void PLLP(pre_val data){
-  out(pll_point, 2, 16, data);
+  out((uint32_t*)pll_point, 2, 16, data);
 }
 
 void PLLM(pre_val data){
-  out(pll_point, 6, 0, data);
+  out((uint32_t*)pll_point, 6, 0, data);
 }
 
 void AHB1(pre_val data){
-  out(pll_point, 4, 4, data);
+  out((uint32_t*)pll_point, 4, 4, data);
 }
 
 void APB1(pre_val data){
-  out(pll_point, 3, 9, data);
+  out((uint32_t*)pll_point, 3, 9, data);
 }
 
 void APB2(pre_val data){
-  out(pll_point, 3, 12, data);
+  out((uint32_t*)pll_point, 3, 12, data);
 }

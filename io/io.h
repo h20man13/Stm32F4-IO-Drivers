@@ -3,8 +3,8 @@
 
 #include <stdint.h>
 
-void out(void*, uint32_t, uint32_t, uint32_t);
-void clear(void*, uint32_t, uint32_t);
-uint32_t in(void*, uint32_t, uint32_t);
+void out(uint32_t*, uint32_t, uint32_t, uint32_t);
+void clear(uint32_t*, uint32_t, uint32_t);
+uint32_t in(uint32_t*, uint32_t, uint32_t);
 
 #endif

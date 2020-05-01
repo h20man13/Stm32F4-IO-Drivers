@@ -1,6 +1,6 @@
-io = io/gpio.c
-timer = timer/timer_pre.c timer/timer_src.c timer/timer_speed.c
-rand = rand/rand.c
+io = io/gpio.cpp io/io.cpp
+timer = timer/timer_pre.cpp timer/timer_src.cpp timer/timer_speed.cpp
+rand = rand/rand.cpp
 src =  main.c
 TARGET = main
 # Define the linker script location and chip architecture.
@@ -8,7 +8,7 @@ LD_SCRIPT = p2.ld
 MCU_SPEC  = cortex-m4
 # Toolchain definitions (ARM bare metal defaults)
 TOOLCHAIN = /usr
-CC = $(TOOLCHAIN)/bin/arm-none-eabi-gcc
+CC = $(TOOLCHAIN)/bin/arm-none-eabi-g++
 AS = $(TOOLCHAIN)/bin/arm-none-eabi-as
 LD = $(TOOLCHAIN)/bin/arm-none-eabi-ld
 OC = $(TOOLCHAIN)/bin/arm-none-eabi-objcopy

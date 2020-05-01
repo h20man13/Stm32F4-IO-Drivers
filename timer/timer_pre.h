@@ -2,6 +2,7 @@
 #define TIMER_PRE
 
 #include <stdint.h>
+#include "../io/io.h"
 
 typedef uint32_t pre_val;
 typedef void pre_void;

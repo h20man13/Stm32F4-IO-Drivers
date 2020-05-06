@@ -11,7 +11,9 @@ int main()
   //Initialize seed
   seed(64);
   //initialize structs to hold adresses
-  GPIO_Struct startbutton;
+  GPIO startbutton(gpioc, p13);
+  startbutton.Configure_MODER(input);
+  startbutton.Configure_PUPDR(none);
   GPIO_Struct led1;
   GPIO_Struct led2;
   GPIO_Struct led3;
@@ -21,7 +23,6 @@ int main()
   GPIO_Struct button3;
   GPIO_Struct button4;
   //configure the pins to the necissary states
-  Init_GPIO(&startbutton, gpioc, p13);
   Configure_MODER(&startbutton, input);
   Configure_PUPDR(&startbutton, none);
 

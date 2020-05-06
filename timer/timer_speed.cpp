@@ -2,8 +2,14 @@
 #include "timer_pre.h"
 #include "timer_src.h"
 
+static clk_speed PLL_SRC_MUX(){
+    return (clk_speed)Get_PLL_MUX();
+}
+static clk_speed SYS_CLK_MUX(){
+    return (clk_speed)Get_SYS_SRC();
+}
 clk_speed PLL(){
-  clk_speed src = Sample_CLock_Speed(PLL_SRC_MUX);
+  clk_speed src = Sample_Clock_Speed(PLL_SRC_MUX);
   pre_val M = Sample_Prescalar(PLLM);
   pre_val N = Sample_Prescalar(PLLN);
   pre_val P = Sample_Prescalar(PLLP);
@@ -16,7 +22,7 @@ inline clk_speed SYSCLK(){
 
 clk_speed AHB1(){
   clk_speed src = Sample_Clock_Speed(SYSCLK);
-  pre_val HPRE = Sample_Prescaler(AHB1);
+  pre_val HPRE = Sample_Prescalar(AHB1);
   return src / HPRE;
 }
 

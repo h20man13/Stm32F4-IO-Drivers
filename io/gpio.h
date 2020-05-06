@@ -6,7 +6,13 @@
 
 #include "../shared.h"
 
-typedef enum{
+
+
+class GPIO
+{
+  public:
+
+  typedef enum{
   p0,
   p1,
   p2,
@@ -24,15 +30,6 @@ typedef enum{
 } GPIO_Pin;
 
 //init the gpio struct
-typedef struct{
-  GPIO_Pin PIN_NUM;
-  uint32_t* MODER;
-  uint32_t* OSPEEDR;
-  uint32_t* PUPDR;
-  volatile uint32_t* IDR;
-  uint32_t* OTYPER;
-  uint32_t* ODR;
-}GPIO_Struct;
 
 //GPIO init adress
 typedef enum{
@@ -41,7 +38,8 @@ typedef enum{
   gpioc = 0x40020800,
   gpiod = 0x40020C00,
   gpioe = 0x40021000
-} GPIO;
+} GPIO_Addr;
+
 //Moder register values
 typedef enum{
   input = 0b00,
@@ -69,12 +67,24 @@ typedef enum{
 } OTYPER;
 
 //Basic GPIO Methods
-void Init_GPIO(GPIO_Struct* const, const GPIO, const GPIO_Pin);
-void Disable_GPIO(GPIO_Struct* const);
-void Configure_MODER(GPIO_Struct* const, const MODER);
-void Configure_OSPEEDR(GPIO_Struct* const, const OSPEEDR);
-void Configure_PUPDR(GPIO_Struct* const, const PUPDR);
-void Configure_OTYPER(GPIO_Struct* const, const OTYPER);
-void Configure_ODR(GPIO_Struct* const, const STATE);
-bool Sample_IDR(GPIO_Struct* const);
+GPIO(const GPIO, const GPIO_Pin);
+~GPIO();
+void Configure_MODER(MODER);
+void Configure_OSPEEDR(OSPEEDR);
+void Configure_PUPDR(PUPDR);
+void Configure_OTYPER(OTYPER);
+void Configure_ODR(STATE);
+bool Sample_IDR();
+
+private:
+
+GPIO_Pin PIN_NUM;
+uint32_t* MODER;
+uint32_t* OSPEEDR;
+uint32_t* PUPDR;
+volatile uint32_t* IDR;
+uint32_t* OTYPER;
+uint32_t* ODR;
+
+};
 #endif

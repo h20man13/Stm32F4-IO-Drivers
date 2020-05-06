@@ -4,43 +4,53 @@
 #include "gpio.h"
 #include "io.h"
 
+static uint32_t counts[5] = {0,0,0,0,0};
+
 //sample gpio fuctions
-void Init_GPIO(GPIO_Struct* const gstruct, const GPIO addr, const GPIO_Pin p){
-  Configure_AHB1_ENR((ENABLE_AHB1)(((uint32_t)addr - 0x40020000)/0x400), on);
-  gstruct -> MODER = (uint32_t*)addr;
-  gstruct -> OSPEEDR = (uint32_t*)(addr + 0x08);
-  gstruct -> PUPDR = (uint32_t*)(addr + 0x0C);
-  gstruct -> IDR = (volatile uint32_t*)(addr + 0x10);
-  gstruct -> OTYPER = (uint32_t*)(addr + 0x04);
-  gstruct -> ODR = (uint32_t*)(addr + 0x14);
-  gstruct -> PIN_NUM = p;
+GPIO::GPIO(const GPIO_Addr addr, const GPIO_Pin p){
+  uint32_t save = (addr - 0x40020000)/0x400;
+  if(counts[addr - 0x4] == 0){
+    Configure_AHB1_ENR(save, on);
+  }
+  MODER = (uint32_t*)addr;
+  OSPEEDR = (uint32_t*)(addr + 0x08);
+  PUPDR = (uint32_t*)(addr + 0x0C);
+  IDR = (volatile uint32_t*)(addr + 0x10);
+  OTYPER = (uint32_t*)(addr + 0x04);
+  ODR = (uint32_t*)(addr + 0x14);
+  PIN_NUM = p;
+  counts[save]++;
 }
 
-void Disable_GPIO(GPIO_Struct* base){
-    uint32_t num = base -> PIN_NUM * 2;
-    clear(base -> MODER, 2, num);
-    clear(base -> OTYPER, 1, base -> PIN_NUM);
-    clear(base -> OSPEEDR, 2, num);
-    clear(base -> PUPDR, 2, num);
-    clear(base -> ODR, 1, base -> PIN_NUM);
-    Configure_AHB1_ENR((ENABLE_AHB1)(((uint32_t)base -> MODER - 40020000)/0x400), off);
+GPIO::~GPIO(){
+    uint32_t num = PIN_NUM * 2;
+    uint32_t save = (MODER - 0x40020000)/0x400;
+    clear(MODER, 2, num);
+    clear(OTYPER, 1, PIN_NUM);
+    clear(OSPEEDR, 2, num);
+    clear(PUPDR, 2, num);
+    clear(ODR, 1, PIN_NUM);
+    counts[save]--;
+    if(counts[save] == 0){
+      //Configure_AHB1_ENR(save, off);
+    }
 }
 //Create mode functions (mode == void)
-void Configure_MODER(GPIO_Struct* const base, const MODER value){
-  out(base -> MODER, 2, base -> PIN_NUM * 2, value);
+void GPIO::Configure_MODER(MODER value){
+  out(MODER, 2, PIN_NUM * 2, value);
 }
-void Configure_OTYPER(GPIO_Struct* const base, const OTYPER value){
-  out(base -> OTYPER, 1, base -> PIN_NUM, value);
+void GPIO::Configure_OTYPER(OTYPER value){
+  out(OTYPER, 1, PIN_NUM, value);
 }
-void Configure_OSPEEDR(GPIO_Struct* const base, const OSPEEDR value){
-  out(base -> OSPEEDR, 2, base -> PIN_NUM * 2, value);
+void GPIO::Configure_OSPEEDR(GPIO::OSPEEDR value){
+  out(OSPEEDR, 2, PIN_NUM * 2, value);
 }
-void Configure_PUPDR(GPIO_Struct* const base, const PUPDR value){
-  out(base -> PUPDR, 2, base -> PIN_NUM * 2, value);
+void GPIO::Configure_PUPDR(GPIO::PUPDR value){
+  out(PUPDR, 2, PIN_NUM * 2, value);
 }
-void Configure_ODR(GPIO_Struct* const base, const STATE value){
-  out(base -> ODR, 1, base -> PIN_NUM, value);
+void GPIO::Configure_ODR(STATE value){
+  out(ODR, 1, PIN_NUM, value);
 }
-bool Sample_IDR(GPIO_Struct* const base){
-  return in((uint32_t*)base -> IDR, 1, base -> PIN_NUM);
+bool GPIO::Sample_IDR(){
+  return in(IDR, 1, PIN_NUM);
 }

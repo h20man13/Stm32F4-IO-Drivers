@@ -24,7 +24,7 @@ GPIO::GPIO(const GPIO_Addr addr, const GPIO_Pin p){
 
 GPIO::~GPIO(){
     uint32_t num = PIN_NUM * 2;
-    uint32_t save = (MODER - 0x40020000)/0x400;
+    uint32_t save = (MODER - (uint32_t*)0x40020000)/0x400;
     clear(MODER, 2, num);
     clear(OTYPER, 1, PIN_NUM);
     clear(OSPEEDR, 2, num);
@@ -36,16 +36,16 @@ GPIO::~GPIO(){
     }
 }
 //Create mode functions (mode == void)
-void GPIO::Configure_MODER(MODER value){
+void GPIO::Configure_MODER(MODER_vals value){
   out(MODER, 2, PIN_NUM * 2, value);
 }
-void GPIO::Configure_OTYPER(OTYPER value){
+void GPIO::Configure_OTYPER(OTYPER_vals value){
   out(OTYPER, 1, PIN_NUM, value);
 }
-void GPIO::Configure_OSPEEDR(GPIO::OSPEEDR value){
+void GPIO::Configure_OSPEEDR(OSPEEDR_vals value){
   out(OSPEEDR, 2, PIN_NUM * 2, value);
 }
-void GPIO::Configure_PUPDR(GPIO::PUPDR value){
+void GPIO::Configure_PUPDR(PUPDR_vals value){
   out(PUPDR, 2, PIN_NUM * 2, value);
 }
 void GPIO::Configure_ODR(STATE value){

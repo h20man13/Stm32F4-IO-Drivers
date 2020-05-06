@@ -2,6 +2,7 @@
 
 const static pre_val* pll_point = (pre_val*)0x40023804;
 const static pre_val* sys_point = (pre_val*)0x40023808;
+const static pre_val* adc_point = (pre_val*)0x40012300;
 
 inline pre_val Sample_Prescalar(pre_val (*func)()){
     return (*func)();
@@ -39,6 +40,10 @@ pre_val APB2(){
   return 1 << (in((uint32_t*)sys_point, 3, 12) - 0b101);
 }
 
+pre_val ADC1(){
+  return (in((uint32_t*)adc_point, 2, 16) + 1) * 2;
+}
+
 //other funcs
 
 void PLLN(pre_val data){
@@ -63,4 +68,8 @@ void APB1(pre_val data){
 
 void APB2(pre_val data){
   out((uint32_t*)pll_point, 3, 12, data);
+}
+
+void ADC1(pre_val data){
+  out((uint32_t*)adc_point, 2, 16, data);
 }

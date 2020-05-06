@@ -16,6 +16,7 @@ pre_val PLLM();
 pre_val AHB1();
 pre_val APB1();
 pre_val APB2();
+pre_val ADC1();
 
 pre_void AHB1(pre_val);
 pre_void APB1(pre_val);
@@ -23,5 +24,6 @@ pre_void PLLN(pre_val);
 pre_void PLLP(pre_val);
 pre_void PLLM(pre_val);
 pre_void APB2(pre_val);
+pre_void ADC1(pre_val);
 
 #endif

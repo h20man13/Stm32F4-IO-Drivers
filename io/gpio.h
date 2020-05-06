@@ -46,33 +46,33 @@ typedef enum{
   output = 0b01,
   alternate = 0b10,
   analog = 0b11
-} MODER;
+} MODER_vals;
 
 typedef enum{
   low_speed = 0b00,
   mid_speed = 0b01,
   high_speed = 0b10,
   very_high_speed = 0b11
-} OSPEEDR;
+} OSPEEDR_vals;
 
 typedef enum{
   none = 0b00,
   pull_up = 0b01,
   pull_down = 0b10
-} PUPDR;
+} PUPDR_vals;
 
 typedef enum{
   push_pull = 0,
   open_drain = 1
-} OTYPER;
+} OTYPER_vals;
 
 //Basic GPIO Methods
-GPIO(const GPIO, const GPIO_Pin);
+GPIO(const GPIO_Addr, const GPIO_Pin);
 ~GPIO();
-void Configure_MODER(MODER);
-void Configure_OSPEEDR(OSPEEDR);
-void Configure_PUPDR(PUPDR);
-void Configure_OTYPER(OTYPER);
+void Configure_MODER(MODER_vals);
+void Configure_OSPEEDR(OSPEEDR_vals);
+void Configure_PUPDR(PUPDR_vals);
+void Configure_OTYPER(OTYPER_vals);
 void Configure_ODR(STATE);
 bool Sample_IDR();
 

@@ -54,3 +54,32 @@ clk_speed ADC1(){
 inline clk_speed Sample_Clock_Speed(clk_speed (*src)()){
   return (*src)();
 }
+
+void PLL(clk_speed target){
+  clk_speed cur = Sample_Clock_Speed(PLL);
+}
+
+clk_void ADC1(clk_speed target){
+  clk_speed past = Sample_Clock_Speed(ADC1);
+  if(target > past){
+    pre_val cur_pre;
+    do{
+      cur_pre = Sample_Prescalar(ADC1);
+      cur_pre -= 2;
+      Configure_Prescalar(ADC1, cur_pre);
+      past = Sample_Clock_Speed(ADC1);
+    }while(target > past);
+    if(past != target){
+      cur_pre += 2;
+      Configure_Prescalar(ADC1, cur_pre);
+    }
+  }
+  else if(target < past){
+    do{
+      pre_val cur_pre = Sample_Prescalar(ADC1);
+      cur_pre += 2;
+      Configure_Prescalar(ADC1, cur_pre);
+      past = Sample_Clock_Speed(ADC1);
+    }while(target < past);
+  }
+}

@@ -8,7 +8,7 @@ typedef uint32_t pre_val;
 typedef void pre_void;
 
 inline pre_val Sample_Prescalar(pre_val(*)());
-inline void Configure_Prescalar(pre_void(*)());
+inline void Configure_Prescalar(pre_void(*)(pre_val), pre_val);
 
 pre_val PLLN();
 pre_val PLLP();

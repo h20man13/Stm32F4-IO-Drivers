@@ -9,6 +9,7 @@ typedef void clk_void;
 //helper methods
 
 inline clk_speed Sample_Clock_Speed(clk_speed(*)());
+inline clk_void Configure_Clock_Speed(clk_void(*)(clk_speed), clk_speed);
 
 //Accesor Methods
 

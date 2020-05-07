@@ -17,7 +17,7 @@ clk_speed PLL(){
   return src / M * N / P;
 }
 
-inline clk_speed SYSCLK(){
+clk_speed SYSCLK(){
   return Sample_Clock_Speed(SYS_CLK_MUX);
 }
 

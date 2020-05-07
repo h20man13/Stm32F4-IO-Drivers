@@ -45,11 +45,10 @@ SECTIONS
 		_sbss = .;
 		*(.bss)
 		*(.bss*)
-		*(COMMON)
 		. = ALIGN(4);
 		_ebss = .;
 	} >RAM
-	.dynamic_allocations :
+	.dynamic_allocations:
 	{
 		. = ALIGN(4);
 		_ssystem_ram = .;

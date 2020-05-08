@@ -38,8 +38,8 @@ LFLAGS += -mcpu=$(MCU_SPEC)
 LFLAGS += -mthumb
 LFLAGS += -Wall
 LFLAGS += --specs=nosys.specs
-LFLAGS += -nostdlib
-LFLAGS += -lgcc
+LFLAGS += -nostdlib  
+LFLAGs += -lgcc
 LFLAGS += -T$(LSCRIPT)
 VECT_TBL = ./p2_vtable.S
 AS_SRC   = ./bootloader.S
@@ -49,10 +49,16 @@ OBJS += $(AS_SRC:.S=.o)
 OBJS += $(C_SRC:.cpp=.o)
 .PHONY: all
 all: $(TARGET).bin
+
 %.o: %.S
-	$(CC) -x assembler-with-cpp $< -o $@ $(ASFLAGS)
+	$(CC) -x assembler $< -o $@ $(ASFLAGS)
+	$(OD) -h $@
+%.o: %.cpp
+	$(CC) -x c++ -c -o $@ $< $(CFLAGS)
+	$(OD) -h $@
 %.o: %.c
-	$(CC) -c -o $@ $< $(CFLAGS)
+	$(CC) -x c -c -o $@ $< $(CFLAGS)
+	$(OD) -h $@
 $(TARGET).elf: $(OBJS)
 	$(CC) $^ -o $@ $(LFLAGS)
 $(TARGET).bin: $(TARGET).elf

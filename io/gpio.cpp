@@ -10,7 +10,7 @@ static uint32_t counts[5] = {0,0,0,0,0};
 GPIO::GPIO(const GPIO_Addr addr, const GPIO_Pin p){
   uint32_t save = (addr - 0x40020000)/0x400;
   if(counts[addr - 0x4] == 0){
-    Configure_AHB1_ENR(save, on);
+    //Configure_AHB1_ENR(save, on);
   }
   MODER = (uint32_t*)addr;
   OSPEEDR = (uint32_t*)(addr + 0x08);

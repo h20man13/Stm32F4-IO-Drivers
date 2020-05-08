@@ -1,7 +1,7 @@
 #ifndef ANALOG_H
 #define ANALOG_H
 
-#include <stdint>
+#include <stdint.h>
 #include "gpio.h"
 
 typedef struct{

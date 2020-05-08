@@ -1,6 +1,4 @@
 #include "timer_speed.h"
-#include "timer_pre.h"
-#include "timer_src.h"
 
 static clk_speed PLL_SRC_MUX(){
     return (clk_speed)Get_PLL_MUX();
@@ -62,7 +60,7 @@ clk_void AHB1(clk_speed target){
         cur_pre /= 2;
       }
       Configure_Prescalar(AHB1, cur_pre);
-      past = Sample_Prescalar(AHB1);
+      past = Sample_Clock_Speed(AHB1);
     }while(target > past);
     if(past != target){
       cur_pre *= 2;
@@ -79,7 +77,7 @@ clk_void AHB1(clk_speed target){
         cur_pre *= 2;
       }
       Configure_Prescalar(AHB1, cur_pre);
-      past = Sample_Prescalar(AHB1);
+      past = Sample_Clock_Speed(AHB1);
     }while(target < past);
     Configure_Clock_Speed(APB1, APB1_save);
     Configure_Clock_Speed(APB2, APB2_save);

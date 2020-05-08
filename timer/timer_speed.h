@@ -3,6 +3,9 @@
 
 #include <stdint.h>
 
+#include "timer_pre.h"
+#include "timer_src.h"
+
 typedef uint32_t clk_speed;
 typedef void clk_void;
 

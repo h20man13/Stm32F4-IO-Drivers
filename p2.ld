@@ -3,8 +3,8 @@ _estack = 0x20017FFF;
 _Min_Leftover_RAM = 0x400;
 MEMORY
 {
-	FLASH ( rx ) : ORIGIN = 0x08000000, LENGTH = 512K
-	RAM ( rxw )	: ORIGIN = 0x20000000, LENGTH = 96K
+	FLASH ( rx )	: ORIGIN = 0x08000000, LENGTH = 512K
+	RAM ( rxw )		: ORIGIN = 0x20000000, LENGTH = 96K
 }
 
 SECTIONS
@@ -45,10 +45,11 @@ SECTIONS
 		_sbss = .;
 		*(.bss)
 		*(.bss*)
+		*(COMMON)
 		. = ALIGN(4);
 		_ebss = .;
 	} >RAM
-	.dynamic_allocations:
+	.dynamic_allocations :
 	{
 		. = ALIGN(4);
 		_ssystem_ram = .;

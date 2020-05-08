@@ -14,66 +14,55 @@ int main()
   GPIO startbutton(gpioc, p13);
   startbutton.Configure_MODER(input);
   startbutton.Configure_PUPDR(none);
-  GPIO_Struct led1;
-  GPIO_Struct led2;
-  GPIO_Struct led3;
-  GPIO_Struct led4;
-  GPIO_Struct button1;
-  GPIO_Struct button2;
-  GPIO_Struct button3;
-  GPIO_Struct button4;
-  //configure the pins to the necissary states
-  Configure_MODER(&startbutton, input);
-  Configure_PUPDR(&startbutton, none);
 
-  Init_GPIO(&button1, gpioc, p10);
-  Configure_MODER(&button1, input);
-  Configure_PUPDR(&startbutton, none);
+  GPIO led1(gpioc, p12);
+  led1.Configure_MODER(output);
+  led1.Configure_OTYPER(push_pull);
 
-  Init_GPIO(&button2, gpioc, p3);
-  Configure_MODER(&button2, input);
-  Configure_PUPDR(&button2, none);
+  GPIO led2(gpioc, p0);
+  led2.Configure_MODER(output);
+  led2.Configure_OTYPER(push_pull);
 
-  Init_GPIO(&button3, gpioc, p8);
-  Configure_MODER(&button3, input);
-  Configure_PUPDR(&button3, none);
+  GPIO led3(gpioc, p9);
+  led3.Configure_MODER(output);
+  led3.Configure_OTYPER(push_pull);
 
-  Init_GPIO(&button4, gpioc, p4);
-  Configure_MODER(&button4, input);
-  Configure_PUPDR(&button4, none);
+  GPIO led4(gpioa, p10);
+  led4.Configure_MODER(output);
+  led4.Configure_OTYPER(push_pull);
 
-  Init_GPIO(&led1, gpioc, p12);
-  Configure_MODER(&led1, output);
-  Configure_OTYPER(&led1, push_pull);
+  GPIO button1(gpioc, p10);
+  button1.Configure_MODER(input);
+  button1.Configure_PUPDR(none);
 
-  Init_GPIO(&led2, gpioc, p0);
-  Configure_MODER(&led2, output);
-  Configure_OTYPER(&led2, push_pull);
+  GPIO button2(gpioc, p3);
+  button2.Configure_MODER(input);
+  button2.Configure_PUPDR(none);
 
-  Init_GPIO(&led3, gpioc, p9);
-  Configure_MODER(&led3, output);
-  Configure_OTYPER(&led3, push_pull);
+  GPIO button3(gpioc, p8);
+  button3.Configure_MODER(input);
+  button3.Configure_PUPDR(none);
 
-  Init_GPIO(&led4, gpioa, p10);
-  Configure_MODER(&led4, output);
-  Configure_OTYPER(&led4, push_pull);
+  GPIO button4(gpioc, p4);
+  button4.Configure_MODER(input);
+  button4.Configure_PUPDR(none);
 
   //wait for user to start game loop
   while(true){
-    if(Sample_IDR(&startbutton)){
-      while(Sample_IDR(&startbutton));
+    if(startbutton.Sample_IDR()){
+      while(startbutton.Sample_IDR());
       break;
     }
   }
   uint32_t size = 1;
   uint32_t time_Allowed = 1000000;
-  GPIO_Struct* outputs[4];
+  GPIO* outputs[4];
   outputs[0] = &led1;
   outputs[1] = &led2;
   outputs[2] = &led3;
   outputs[3] = &led4;
 
-  GPIO_Struct* inputs[4];
+  GPIO* inputs[4];
   inputs[0] = &button1;
   inputs[1] = &button2;
   inputs[2] = &button3;
@@ -86,91 +75,85 @@ int main()
       turn[i] = sudo_randomUint32() % size;
     }
     for(int i = 0; i < size; i++){
-      Configure_ODR(outputs[turn[i]], on);
+      outputs[turn[i]] -> Configure_ODR(on);
       sleep(100000);
-      Configure_ODR(outputs[turn[i]], off);
+      outputs[turn[i]] -> Configure_ODR(off);
       sleep(100000);
     }
-    for(int i = 0; i < size; i++)
-    {
+    for(int i = 0; i < size; i++){
       int z = time_Allowed;
-      while(z > 0)
-      {
-	for(int x = 0; x < 4; x++)
-	{
-	  if(x == turn[i] && Sample_IDR(inputs[x]))
-	  {
-	    Configure_ODR(outputs[x], on);
-	    while(Sample_IDR(inputs[x]));
-	    Configure_ODR(outputs[x], off);
-	    goto next_turn;
-	  }
-	  else if(x != turn[i] && Sample_IDR(inputs[x]))
-	  {
-	    Configure_ODR(outputs[x], on);
-            while(Sample_IDR(inputs[x]));
-	    Configure_ODR(outputs[x], off);
-	    Configure_ODR(outputs[turn[i]], on);
-	    sleep(10000);
-	    Configure_ODR(outputs[turn[i]], off);
-	    sleep(10000);
-	    Configure_ODR(outputs[turn[i]], on);
+      while(z > 0){
+	      for(int x = 0; x < 4; x++){
+	        if(x == turn[i] && inputs[x] -> Sample_IDR()){
+	          outputs[x] -> Configure_ODR(on);
+	          while(inputs[x] -> Sample_IDR());
+	          outputs[x] -> Configure_ODR(off);
+	          goto next_turn;
+	        }
+	        else if(x != turn[i] && inputs[x] -> Sample_IDR()){
+	          outputs[x] -> Configure_ODR(on);
+            while(inputs[x] -> Sample_IDR());
+            outputs[x] -> Configure_ODR(off);
+            outputs[x] -> Configure_ODR(on);
             sleep(10000);
-            Configure_ODR(outputs[turn[i]], off);
+            outputs[turn[i]] -> Configure_ODR(off);
             sleep(10000);
-	    Configure_ODR(outputs[turn[i]], on);
+            outputs[turn[i]] -> Configure_ODR(on);
             sleep(10000);
-            Configure_ODR(outputs[turn[i]], off);
+            outputs[turn[i]] -> Configure_ODR(off);
             sleep(10000);
-	    goto end_game;
-	  }
-	}
-	z -= 2;
+            outputs[turn[i]] -> Configure_ODR(on);
+            sleep(10000);
+            outputs[turn[i]] -> Configure_ODR(off);
+            sleep(10000);
+            goto end_game;
+	        }
+	      }
+	      z -= 2;
       }
       goto end_game;
-    next_turn: sleep(0);
+      next_turn: sleep(0);
     }
     time_Allowed -= 2;
   }
- end_game:
- Configure_ODR(&led1, on);
- Configure_ODR(&led2, on);
- Configure_ODR(&led3, on);
- Configure_ODR(&led4, on);
+ end_game: led1.Configure_ODR(on);
+ led2.Configure_ODR(on);
+ led3.Configure_ODR(on);
+ led4.Configure_ODR(on);
  sleep(10000);
- Configure_ODR(&led1, off);
- Configure_ODR(&led2, off);
- Configure_ODR(&led3, off);
- Configure_ODR(&led4, off);
+ led1.Configure_ODR(off);
+ led2.Configure_ODR(off);
+ led3.Configure_ODR(off);
+ led4.Configure_ODR(off);
  sleep(10000);
- Configure_ODR(&led1, on);
- Configure_ODR(&led2, on);
- Configure_ODR(&led3, on);
- Configure_ODR(&led4, on);
+ led1.Configure_ODR(on);
+ led2.Configure_ODR(on);
+ led3.Configure_ODR(on);
+ led4.Configure_ODR(on);
  sleep(10000);
- Configure_ODR(&led1, off);
- Configure_ODR(&led2, off);
- Configure_ODR(&led3, off);
- Configure_ODR(&led4, off);
+ led1.Configure_ODR(off);
+ led2.Configure_ODR(off);
+ led3.Configure_ODR(off);
+ led4.Configure_ODR(off);
  sleep(10000);
- Configure_ODR(&led1, on);
- Configure_ODR(&led2, on);
- Configure_ODR(&led3, on);
- Configure_ODR(&led4, on);
+ led1.Configure_ODR(on);
+ led2.Configure_ODR(on);
+ led3.Configure_ODR(on);
+ led4.Configure_ODR(on);
  sleep(10000);
- Configure_ODR(&led1, off);
- Configure_ODR(&led2, off);
- Configure_ODR(&led3, off);
- Configure_ODR(&led4, off);
+ led1.Configure_ODR(off);
+ led2.Configure_ODR(off);
+ led3.Configure_ODR(off);
+ led4.Configure_ODR(off);
  sleep(10000);
- Configure_ODR(&led1, on);
- Configure_ODR(&led2, on);
- Configure_ODR(&led3, on);
- Configure_ODR(&led4, on);
+ led1.Configure_ODR(on);
+ led2.Configure_ODR(on);
+ led3.Configure_ODR(on);
+ led4.Configure_ODR(on);
  sleep(10000);
- Configure_ODR(&led1, off);
- Configure_ODR(&led2, off);
- Configure_ODR(&led3, off);
- Configure_ODR(&led4, off);
+ led1.Configure_ODR(off);
+ led2.Configure_ODR(off);
+ led3.Configure_ODR(off);
+ led4.Configure_ODR(off);
  sleep(10000);
 }

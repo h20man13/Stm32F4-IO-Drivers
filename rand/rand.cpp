@@ -1,7 +1,6 @@
-#include <stdint.h>
-#include <stdbool.h>
 
 #include "rand.h"
+
 static uint32_t seed_v;
 static bool ok = false;
 

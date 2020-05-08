@@ -1,165 +1,167 @@
 #include "timer_speed.h"
 
-static clk_speed PLL_SRC_MUX(){
-    return (clk_speed)Get_PLL_MUX();
-}
-static clk_speed SYS_CLK_MUX(){
-    return (clk_speed)Get_SYS_SRC();
+static clk clk_sv;
+
+uint32_t Sample_Clock_Speed(uint32_t (clk::*src)()){
+  return (clk_sv.*src)();
 }
 
-clk_speed PLL(){
-  clk_speed src = Sample_Clock_Speed(PLL_SRC_MUX);
-  pre_val M = Sample_Prescalar(PLLM);
-  pre_val N = Sample_Prescalar(PLLN);
-  pre_val P = Sample_Prescalar(PLLP);
+void Configure_Clock_Speed(void (clk::*f)(uint32_t), uint32_t var){
+  (clk_sv.*f)(var);
+}
+
+uint32_t clk::PLL_SRC_MUX(){
+    return Get_PLL_MUX();
+}
+uint32_t clk::SYS_CLK_MUX(){
+    return Get_SYS_SRC();
+}
+
+uint32_t clk::PLL(){
+  uint32_t src = Sample_Clock_Speed(&clk::PLL_SRC_MUX);
+  uint32_t M = Sample_Prescalar(&pre::PLLM);
+  uint32_t N = Sample_Prescalar(&pre::PLLN);
+  uint32_t P = Sample_Prescalar(&pre::PLLP);
   return src / M * N / P;
 }
 
-clk_speed SYSCLK(){
-  return Sample_Clock_Speed(SYS_CLK_MUX);
+uint32_t clk::SYS_CLK(){
+  return Sample_Clock_Speed(&clk::SYS_CLK_MUX);
 }
 
-clk_speed AHB1(){
-  clk_speed src = Sample_Clock_Speed(SYSCLK);
-  pre_val HPRE = Sample_Prescalar(AHB1);
+uint32_t clk::AHB1(){
+  uint32_t src = Sample_Clock_Speed(&clk::SYS_CLK);
+  uint32_t HPRE = Sample_Prescalar(&pre::AHB1);
   return src / HPRE;
 }
 
-clk_speed APB2(){
-  clk_speed src = Sample_Clock_Speed(AHB1);
-  pre_val PPRE2 = Sample_Prescalar(APB2);
+uint32_t clk::APB2(){
+  uint32_t src = Sample_Clock_Speed(&clk::AHB1);
+  uint32_t PPRE2 = Sample_Prescalar(&pre::APB2);
   return src / PPRE2;
 }
 
-clk_speed APB1(){
-   clk_speed src = Sample_Clock_Speed(AHB1);
-   pre_val PPRE1 = Sample_Prescalar(APB1);
+uint32_t clk::APB1(){
+   uint32_t src = Sample_Clock_Speed(&clk::AHB1);
+   uint32_t PPRE1 = Sample_Prescalar(&pre::APB1);
    return src / PPRE1;
 }
 
-clk_speed ADC1(){
-  clk_speed src = Sample_Clock_Speed(APB2);
-  pre_val ADCPRE = Sample_Prescalar(ADC1);
+uint32_t clk::ADC1(){
+  uint32_t src = Sample_Clock_Speed(&clk::APB2);
+  uint32_t ADCPRE = Sample_Prescalar(&pre::ADC1);
   return src / ADCPRE; 
 }
-		     
-inline clk_speed Sample_Clock_Speed(clk_speed (*src)()){
-  return (*src)();
-}
 
-clk_void AHB1(clk_speed target){
-  clk_speed past = Sample_Clock_Speed(AHB1);
-  clk_speed APB1_save = Sample_Clock_Speed(APB1);
-  clk_speed APB2_save = Sample_Clock_Speed(APB2);
+void clk::AHB1(uint32_t target){
+  uint32_t past = Sample_Clock_Speed(&clk::AHB1);
+  uint32_t APB1_save = Sample_Clock_Speed(&clk::APB1);
+  uint32_t APB2_save = Sample_Clock_Speed(&clk::APB2);
   if(target > past){
-    pre_val cur_pre;
+    uint32_t cur_pre;
     do{
-      cur_pre = Sample_Prescalar(AHB1);
+      cur_pre = Sample_Prescalar(&pre::AHB1);
       cur_pre /= 2;
       if(cur_pre == 32){
         cur_pre /= 2;
       }
-      Configure_Prescalar(AHB1, cur_pre);
-      past = Sample_Clock_Speed(AHB1);
+      Configure_Prescalar(&pre::AHB1, cur_pre);
+      past = Sample_Clock_Speed(&clk::AHB1);
     }while(target > past);
     if(past != target){
       cur_pre *= 2;
-      Configure_Prescalar(AHB1, cur_pre);
+      Configure_Prescalar(&pre::AHB1, cur_pre);
     }
-    Configure_Clock_Speed(APB1, APB1_save);
-    Configure_Clock_Speed(APB2, APB2_save);
+    Configure_Clock_Speed(&clk::APB1, APB1_save);
+    Configure_Clock_Speed(&clk::APB2, APB2_save);
   }
   else if(target < past){
     do{
-      pre_val cur_pre = Sample_Prescalar(AHB1);
+      uint32_t cur_pre = Sample_Prescalar(&pre::AHB1);
       cur_pre *= 2;
       if(cur_pre == 32){
         cur_pre *= 2;
       }
-      Configure_Prescalar(AHB1, cur_pre);
-      past = Sample_Clock_Speed(AHB1);
+      Configure_Prescalar(&pre::AHB1, cur_pre);
+      past = Sample_Clock_Speed(&clk::AHB1);
     }while(target < past);
-    Configure_Clock_Speed(APB1, APB1_save);
-    Configure_Clock_Speed(APB2, APB2_save);
+    Configure_Clock_Speed(&clk::APB1, APB1_save);
+    Configure_Clock_Speed(&clk::APB2, APB2_save);
   }
 }
 
-clk_void APB2(clk_speed target){
-  clk_speed past = Sample_Clock_Speed(APB2);
-  clk_speed ADC1_save = Sample_Clock_Speed(ADC1);
+void clk::APB2(uint32_t target){
+  uint32_t past = Sample_Clock_Speed(&clk::APB2);
+  uint32_t ADC1_save = Sample_Clock_Speed(&clk::ADC1);
   if(target > past){
-    pre_val cur_pre;
+    uint32_t cur_pre;
     do{
-      cur_pre = Sample_Prescalar(APB2);
+      cur_pre = Sample_Prescalar(&pre::APB2);
       cur_pre /= 2;
-      Configure_Prescalar(APB2, cur_pre);
-      past = Sample_Prescalar(APB2);
+      Configure_Prescalar(&pre::APB2, cur_pre);
+      past = Sample_Prescalar(&pre::APB2);
     }while(target > past);
     if(past != target){
       cur_pre *= 2;
-      Configure_Prescalar(APB2, cur_pre);
+      Configure_Prescalar(&pre::APB2, cur_pre);
     }
-    Configure_Clock_Speed(ADC1, ADC1_save);
+    Configure_Clock_Speed(&clk::ADC1, ADC1_save);
   }
   else if(target < past){
     do{
-      pre_val cur_pre = Sample_Prescalar(APB2);
+      uint32_t cur_pre = Sample_Prescalar(&pre::APB2);
       cur_pre *= 2;
-      Configure_Prescalar(APB2, cur_pre);
+      Configure_Prescalar(&pre::APB2, cur_pre);
     }while(target < past);
-    Configure_Clock_Speed(ADC1, ADC1_save);
+    Configure_Clock_Speed(&clk::ADC1, ADC1_save);
   }
 }
 
-clk_void APB1(clk_speed target){
-  clk_speed past = Sample_Clock_Speed(APB1);
+void clk::APB1(uint32_t target){
+  uint32_t past = Sample_Clock_Speed(&clk::APB1);
   if(target > past){
-    pre_val cur_pre;
+    uint32_t cur_pre;
     do{
-      cur_pre = Sample_Prescalar(APB1);
+      cur_pre = Sample_Prescalar(&pre::APB1);
       cur_pre /= 2;
-      Configure_Prescalar(APB1, cur_pre);
-      past = Sample_Prescalar(APB1);
+      Configure_Prescalar(&pre::APB1, cur_pre);
+      past = Sample_Prescalar(&pre::APB1);
     }while(target > past);
     if(past != target){
       cur_pre *= 2;
-      Configure_Prescalar(APB1, cur_pre);
+      Configure_Prescalar(&pre::APB1, cur_pre);
     }
   }
   else if(target < past){
     do{
-      pre_val cur_pre = Sample_Prescalar(APB1);
+      uint32_t cur_pre = Sample_Prescalar(&pre::APB1);
       cur_pre *= 2;
-      Configure_Prescalar(APB1, cur_pre);
+      Configure_Prescalar(&pre::APB1, cur_pre);
     }while(target < past);
   }
 }
 
-clk_void ADC1(clk_speed target){
-  clk_speed past = Sample_Clock_Speed(ADC1);
+void clk::ADC1(uint32_t target){
+  uint32_t past = Sample_Clock_Speed(&clk::ADC1);
   if(target > past){
-    pre_val cur_pre;
+    uint32_t cur_pre;
     do{
-      cur_pre = Sample_Prescalar(ADC1);
+      cur_pre = Sample_Prescalar(&pre::ADC1);
       cur_pre -= 2;
-      Configure_Prescalar(ADC1, cur_pre);
-      past = Sample_Clock_Speed(ADC1);
+      Configure_Prescalar(&pre::ADC1, cur_pre);
+      past = Sample_Clock_Speed(&clk::ADC1);
     }while(target > past);
     if(past != target){
       cur_pre += 2;
-      Configure_Prescalar(ADC1, cur_pre);
+      Configure_Prescalar(&pre::ADC1, cur_pre);
     }
   }
   else if(target < past){
     do{
-      pre_val cur_pre = Sample_Prescalar(ADC1);
+      uint32_t cur_pre = Sample_Prescalar(&pre::ADC1);
       cur_pre += 2;
-      Configure_Prescalar(ADC1, cur_pre);
-      past = Sample_Clock_Speed(ADC1);
+      Configure_Prescalar(&pre::ADC1, cur_pre);
+      past = Sample_Clock_Speed(&clk::ADC1);
     }while(target < past);
   }
-}
-
-inline clk_void Configure_Clock_Speed(clk_void (*func)(clk_speed), clk_speed var){
-  (*func)(var);
 }

@@ -1,6 +1,6 @@
 io = io/gpio.cpp io/io.cpp
 timer = timer/timer_pre.cpp timer/timer_src.cpp timer/timer_speed.cpp
-rand = rand/rand.cpp
+math = math/rand.cpp math/algebra.cpp
 src =  main.cpp
 TARGET = main
 # Define the linker script location and chip architecture.
@@ -34,16 +34,20 @@ CFLAGS += -fmessage-length=0
 CFLAGS += --specs=nosys.specs
 # Linker directives.
 LSCRIPT = ./$(LD_SCRIPT)
-LFLAGS += -mcpu=$(MCU_SPEC)
-LFLAGS += -mthumb
+LFLAGS += -mcpu=$(MCU_SPEC) 
+LFLAGS += --static
+LFLAGS += -mthumb 
 LFLAGS += -Wall
+LFLAGS += -lgcc
+LFLAGS += -lc
+LFLAGS += -Wl,-Map=$(TARGET).map
+LFLAGS += -Wl,--gc-sections
+LFLAGS += -nostdlib
 LFLAGS += --specs=nosys.specs
-LFLAGS += -nostdlib  
-LFLAGs += -lgcc
 LFLAGS += -T$(LSCRIPT)
 VECT_TBL = ./p2_vtable.S
 AS_SRC   = ./bootloader.S
-C_SRC    = $(io) $(timer) $(rand) $(src)
+C_SRC    = $(io) $(timer) $(math) $(src)
 OBJS =  $(VECT_TBL:.S=.o)
 OBJS += $(AS_SRC:.S=.o)
 OBJS += $(C_SRC:.cpp=.o)
@@ -73,3 +77,4 @@ clean:
 	rm -f ./*/*~
 	rm -f ./*#
 	rm -f $(TARGET).bin
+	rm -f $(TARGET).map

@@ -6,29 +6,27 @@
 #include "timer_pre.h"
 #include "timer_src.h"
 
-typedef uint32_t clk_speed;
-typedef void clk_void;
-
-//helper methods
-
-inline clk_speed Sample_Clock_Speed(clk_speed(*)());
-inline clk_void Configure_Clock_Speed(clk_void(*)(clk_speed), clk_speed);
-
 //Accesor Methods
+class clk{
+    public:
+    uint32_t PLL_SRC_MUX();
+    uint32_t SYS_CLK_MUX();
+    uint32_t PLL();
+    uint32_t SYS_CLK();
+    uint32_t AHB1();
+    uint32_t APB2();
+    uint32_t APB1();
+    uint32_t ADC1();
 
-clk_speed PLL();
-clk_speed SYS_CLK();
-clk_speed AHB1();
-clk_speed APB2();
-clk_speed APB1();
-clk_speed ADC1();
+    void PLL(uint32_t);
+    void SYS_CLK(uint32_t);
+    void AHB1(uint32_t);
+    void APB2(uint32_t);
+    void APB1(uint32_t);
+    void ADC1(uint32_t);
+};
 
-clk_void PLL(clk_speed);
-clk_void SYS_CLK(clk_speed);
-clk_void AHB1(clk_speed);
-clk_void APB2(clk_speed);
-clk_void APB1(clk_speed);
-clk_void ADC1(clk_speed);
-
+uint32_t Sample_Clock_Speed(uint32_t(clk::*)());
+void Configure_Clock_Speed(void(clk::*)(uint32_t), uint32_t);
 
 #endif

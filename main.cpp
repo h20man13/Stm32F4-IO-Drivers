@@ -1,11 +1,13 @@
 #include <stdbool.h>
+
 #include "io/gpio.h"
-#include "rand/rand.h"
+#include "math/rand.h"
 
 void sleep(uint32_t f)
 {
   for(volatile uint32_t i = 0; i < f; i++);
 }
+
 int main()
 {
   //Initialize seed

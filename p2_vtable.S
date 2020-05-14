@@ -98,7 +98,7 @@ vtable:
 	.word SPI4_IRQ_handler
 
 	//where to boot ram from
-	#define extern boot_ram_base 0xf108f85f
+	#define boot_ram_base 0xf108f85f
 	.word boot_ram_base
 
 	//alaias's for each Interupt handaler pointing to default handaler until it is overridden 

@@ -1,7 +1,7 @@
 io = io/gpio.cpp io/io.cpp
 timer = timer/timer_pre.cpp timer/timer_src.cpp timer/timer_speed.cpp
 math = math/rand.cpp math/algebra.cpp
-src =  main.cpp
+src =  setup.cpp main.cpp
 TARGET = main
 # Define the linker script location and chip architecture.
 LD_SCRIPT = p2.ld
@@ -16,20 +16,17 @@ OD = $(TOOLCHAIN)/bin/arm-none-eabi-objdump
 OS = $(TOOLCHAIN)/bin/arm-none-eabi-size
 # Assembly directives.
 ASFLAGS += -c
-ASFLAGS += -O0
 ASFLAGS += -mcpu=$(MCU_SPEC)
 ASFLAGS += -mthumb
 ASFLAGS += -Wall
-# (Set error messages to appear on a single line.)
-ASFLAGS += -fmessage-length=0
 # C compilation directives
 CFLAGS += -mcpu=$(MCU_SPEC)
 CFLAGS += -mthumb
+CFLAGS += -fno-exceptions
+CFLAGS += -fno-rtti
 CFLAGS += -Wall
 CFLAGS += -g
 CFLAGS += -I./*/
-# (Set error messages to appear on a single line.)
-CFLAGS += -fmessage-length=0
 # (Set system to ignore semihosted junk)
 CFLAGS += --specs=nosys.specs
 # Linker directives.
@@ -38,31 +35,23 @@ LFLAGS += -mcpu=$(MCU_SPEC)
 LFLAGS += --static
 LFLAGS += -mthumb 
 LFLAGS += -Wall
-LFLAGS += -lgcc
-LFLAGS += -lc
 LFLAGS += -Wl,-Map=$(TARGET).map
-LFLAGS += -Wl,--gc-sections
 LFLAGS += -nostdlib
+LFLAGS += -Wl,--gc-sections
 LFLAGS += --specs=nosys.specs
 LFLAGS += -T$(LSCRIPT)
 VECT_TBL = ./p2_vtable.S
-AS_SRC   = ./bootloader.S
-C_SRC    = $(io) $(timer) $(math) $(src)
-OBJS =  $(VECT_TBL:.S=.o)
-OBJS += $(AS_SRC:.S=.o)
+C_SRC = $(io) $(timer) $(math) $(src)
+OBJS = $(VECT_TBL:.S=.o)
 OBJS += $(C_SRC:.cpp=.o)
 .PHONY: all
 all: $(TARGET).bin
-
-%.o: %.S
-	$(CC) -x assembler $< -o $@ $(ASFLAGS)
-	$(OD) -h $@
 %.o: %.cpp
-	$(CC) -x c++ -c -o $@ $< $(CFLAGS)
-	$(OD) -h $@
-%.o: %.c
-	$(CC) -x c -c -o $@ $< $(CFLAGS)
-	$(OD) -h $@
+	$(CC) -c $< -o $@ $(CFLAGS)
+	$(OD) -s $@
+%.o: %.S
+	$(CC) $< -o $@ $(ASFLAGS)
+	$(OD) -s $@
 $(TARGET).elf: $(OBJS)
 	$(CC) $^ -o $@ $(LFLAGS)
 $(TARGET).bin: $(TARGET).elf

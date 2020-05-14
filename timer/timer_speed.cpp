@@ -1,12 +1,12 @@
 #include "timer_speed.h"
 
-static clk clk_sv;
+const static clk clk_sv;
 
-uint32_t Sample_Clock_Speed(uint32_t (clk::*src)()){
+uint32_t Sample_Clock_Speed(uint32_t (clk::*src)() const){
   return (clk_sv.*src)();
 }
 
-void Configure_Clock_Speed(void (clk::*f)(uint32_t), uint32_t var){
+void Configure_Clock_Speed(void (clk::*f)(uint32_t) const, uint32_t var){
   (clk_sv.*f)(var);
 }
 

@@ -15,6 +15,33 @@ SECTIONS
 		KEEP(*(.vector_table))
 		. = ALIGN(4);
 	} >FLASH
+	.preinit_array :
+	{
+		. = ALIGN(4);
+		_spreinit_array = .;
+		KEEP (*(.preinit_array))
+		KEEP (*(.preinit_array*))
+		_epreinit_array = .;
+		. = ALIGN(4);
+	} >FLASH
+	.init_array :
+	{
+		. = ALIGN(4);
+		_sinit_array = .;
+		KEEP (*(.init_array))
+		KEEP (*(.init_array*))
+		_einit_array = .;
+		. = ALIGN(4);
+	} >FLASH
+	.fini_array :
+	{
+		. = ALIGN(4);
+		_sfini_array = .;
+		KEEP (*(.fini_array))
+		KEEP (*(.fini_array*))
+		_efini_array = .;
+		. = ALIGN(4);
+	} >FLASH
 	.text :
 	{
 		. = ALIGN(4);
@@ -22,6 +49,18 @@ SECTIONS
 		*(.text*)
 		. = ALIGN(4);
 	} >FLASH
+	/*.ARM.extab :
+	{
+		. = ALIGN(4);
+		*(.ARM.extab*)
+		. = ALIGN(4);
+	} >FLASH
+	.ARM.exidx :
+	{
+		. = ALIGN(4);
+		*(.ARM.exidx*)
+		. = ALIGN(4);
+	} >FLASH*/
 	.rodata :
 	{
 		. = ALIGN(4);

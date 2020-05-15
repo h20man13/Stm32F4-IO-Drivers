@@ -7,6 +7,6 @@ void enable_timer(GPIO_Addr v){
     *AHB1_ENR |=  1 << ((v - gpioa) / 0x400);
 }
 
-void timer_disable(GPIO_Addr v){
+void disable_timer(GPIO_Addr v){
     *AHB1_ENR &= ~(1 << ((v - gpioa) / 0x400));
 }

@@ -35,6 +35,9 @@ Discarded input sections
  .debug_frame   0x0000000000000000      0x20c timer/timer_speed.o
  .ARM.attributes
                 0x0000000000000000       0x33 timer/timer_speed.o
+ .data          0x0000000000000000        0x0 timer/timer_enable.o
+ .bss           0x0000000000000000        0x0 timer/timer_enable.o
+ .rodata        0x0000000000000000        0x4 timer/timer_enable.o
  .data          0x0000000000000000        0x0 math/rand.o
  .data          0x0000000000000000        0x0 math/algebra.o
  .bss           0x0000000000000000        0x0 math/algebra.o
@@ -58,6 +61,7 @@ LOAD io/io.o
 LOAD timer/timer_pre.o
 LOAD timer/timer_src.o
 LOAD timer/timer_speed.o
+LOAD timer/timer_enable.o
 LOAD math/rand.o
 LOAD math/algebra.o
 LOAD setup.o
@@ -97,144 +101,147 @@ LOAD main.o
                 0x000000000800015c                _efini_array = .
                 0x000000000800015c                . = ALIGN (0x4)
 
-.text           0x000000000800015c      0xeec
+.text           0x000000000800015c      0xf8c
                 0x000000000800015c                . = ALIGN (0x4)
  *(.text)
- .text          0x000000000800015c      0x208 io/gpio.o
+ .text          0x000000000800015c      0x230 io/gpio.o
                 0x000000000800015c                GPIO::GPIO(GPIO_Addr, GPIO_Pin)
                 0x000000000800015c                GPIO::GPIO(GPIO_Addr, GPIO_Pin)
-                0x00000000080001e0                GPIO::~GPIO()
-                0x00000000080001e0                GPIO::~GPIO()
-                0x0000000008000274                GPIO::Configure_MODER(MODER_vals)
-                0x000000000800029c                GPIO::Configure_OTYPER(OTYPER_vals)
-                0x00000000080002c2                GPIO::Configure_OSPEEDR(OSPEEDR_vals)
-                0x00000000080002ea                GPIO::Configure_PUPDR(PUPDR_vals)
-                0x0000000008000312                GPIO::Configure_ODR(STATE)
-                0x0000000008000338                GPIO::Sample_IDR()
- .text          0x0000000008000364       0xaa io/io.o
-                0x0000000008000364                out(unsigned long volatile*, unsigned long, unsigned long, unsigned long)
-                0x00000000080003a6                clear(unsigned long volatile*, unsigned long, unsigned long)
-                0x00000000080003e0                in(unsigned long volatile*, unsigned long, unsigned long)
- *fill*         0x000000000800040e        0x2 
- .text          0x0000000008000410      0x360 timer/timer_pre.o
-                0x0000000008000410                Sample_Prescalar(unsigned long (pre::*)() const)
-                0x000000000800043c                Configure_Prescalar(void (pre::*)(unsigned long) const, unsigned long)
-                0x000000000800046c                pre::PLLN() const
-                0x0000000008000490                pre::PLLP() const
-                0x00000000080004bc                pre::PLLM() const
-                0x00000000080004e0                pre::AHB1() const
-                0x000000000800051c                pre::APB1() const
-                0x0000000008000548                pre::APB2() const
-                0x0000000008000574                pre::ADC1() const
-                0x000000000800059c                pre::PLLN(unsigned long) const
-                0x00000000080005c0                pre::PLLP(unsigned long) const
-                0x0000000008000600                pre::PLLM(unsigned long) const
-                0x0000000008000624                pre::AHB1(unsigned long) const
-                0x0000000008000674                pre::APB1(unsigned long) const
-                0x00000000080006b8                pre::APB2(unsigned long) const
-                0x00000000080006f8                pre::ADC1(unsigned long) const
- .text          0x0000000008000770       0x68 math/rand.o
-                0x0000000008000770                seed(unsigned long)
-                0x0000000008000798                sudo_randomUint32()
- .text          0x00000000080007d8       0x40 math/algebra.o
-                0x0000000008000800                log_2(unsigned long)
- .text          0x0000000008000818       0xbc setup.o
-                0x0000000008000818                reset_handler
- .text          0x00000000080008d4      0x770 main.o
-                0x00000000080008d4                sleep(unsigned long)
-                0x0000000008000904                main
+                0x00000000080001f0                GPIO::~GPIO()
+                0x00000000080001f0                GPIO::~GPIO()
+                0x000000000800029c                GPIO::Configure_MODER(MODER_vals)
+                0x00000000080002c4                GPIO::Configure_OTYPER(OTYPER_vals)
+                0x00000000080002ea                GPIO::Configure_OSPEEDR(OSPEEDR_vals)
+                0x0000000008000312                GPIO::Configure_PUPDR(PUPDR_vals)
+                0x000000000800033a                GPIO::Configure_ODR(STATE)
+                0x0000000008000360                GPIO::Sample_IDR()
+ .text          0x000000000800038c       0xaa io/io.o
+                0x000000000800038c                out(unsigned long volatile*, unsigned long, unsigned long, unsigned long)
+                0x00000000080003ce                clear(unsigned long volatile*, unsigned long, unsigned long)
+                0x0000000008000408                in(unsigned long volatile*, unsigned long, unsigned long)
+ *fill*         0x0000000008000436        0x2 
+ .text          0x0000000008000438      0x360 timer/timer_pre.o
+                0x0000000008000438                Sample_Prescalar(unsigned long (pre::*)() const)
+                0x0000000008000464                Configure_Prescalar(void (pre::*)(unsigned long) const, unsigned long)
+                0x0000000008000494                pre::PLLN() const
+                0x00000000080004b8                pre::PLLP() const
+                0x00000000080004e4                pre::PLLM() const
+                0x0000000008000508                pre::AHB1() const
+                0x0000000008000544                pre::APB1() const
+                0x0000000008000570                pre::APB2() const
+                0x000000000800059c                pre::ADC1() const
+                0x00000000080005c4                pre::PLLN(unsigned long) const
+                0x00000000080005e8                pre::PLLP(unsigned long) const
+                0x0000000008000628                pre::PLLM(unsigned long) const
+                0x000000000800064c                pre::AHB1(unsigned long) const
+                0x000000000800069c                pre::APB1(unsigned long) const
+                0x00000000080006e0                pre::APB2(unsigned long) const
+                0x0000000008000720                pre::ADC1(unsigned long) const
+ .text          0x0000000008000798       0x78 timer/timer_enable.o
+                0x0000000008000798                enable_timer(GPIO_Addr)
+                0x00000000080007d4                disable_timer(GPIO_Addr)
+ .text          0x0000000008000810       0x68 math/rand.o
+                0x0000000008000810                seed(unsigned long)
+                0x0000000008000838                sudo_randomUint32()
+ .text          0x0000000008000878       0x40 math/algebra.o
+                0x00000000080008a0                log_2(unsigned long)
+ .text          0x00000000080008b8       0xbc setup.o
+                0x00000000080008b8                reset_handler
+ .text          0x0000000008000974      0x770 main.o
+                0x0000000008000974                sleep(unsigned long)
+                0x00000000080009a4                main
  *(.text*)
  .text.default_interrupt_handler
-                0x0000000008001044        0x2 p2_vtable.o
-                0x0000000008001044                PVD_IRQ_handler
-                0x0000000008001044                DMA1_S0_IRQ_handler
-                0x0000000008001044                DMA2_S0_IRQ_handler
-                0x0000000008001044                usage_handler
-                0x0000000008001044                DMA2_S5_IRQ_handler
-                0x0000000008001044                NMI_handler
-                0x0000000008001044                I2C3_EV_IRQ_handler
-                0x0000000008001044                pending_SV_handler
-                0x0000000008001044                USART1_IRQ_handler
-                0x0000000008001044                TIM1_CC_IRQ_handler
-                0x0000000008001044                DMA2_S1_IRQ_handler
-                0x0000000008001044                default_interrupt_handler
-                0x0000000008001044                DMA1_S5_IRQ_handler
-                0x0000000008001044                SPI1_IRQ_handler
-                0x0000000008001044                DMA2_S4_IRQ_handler
-                0x0000000008001044                I2C3_ER_IRQ_handler
-                0x0000000008001044                OTG_IRQ_handler
-                0x0000000008001044                TIM3_IRQ_handler
-                0x0000000008001044                RTC_Alarm_IRQ_handler
-                0x0000000008001044                RTC_IRQ_handler
-                0x0000000008001044                I2C1_EV_IRQ_handler
-                0x0000000008001044                DMA1_S2_IRQ_handler
-                0x0000000008001044                EXTI4_IRQ_handler
-                0x0000000008001044                ADC_IRQ_handler
-                0x0000000008001044                MMF_handler
-                0x0000000008001044                DMA1_S7_IRQ_handler
-                0x0000000008001044                EXTI1_IRQ_handler
-                0x0000000008001044                SVC_handler
-                0x0000000008001044                SYSTick_handler
-                0x0000000008001044                TIM5_IRQ_handler
-                0x0000000008001044                DMA2_S6_IRQ_handler
-                0x0000000008001044                TAMP_IRQ_handler
-                0x0000000008001044                TIM2_IRQ_handler
-                0x0000000008001044                DMA2_S3_IRQ_handler
-                0x0000000008001044                USART6_IRQ_handler
-                0x0000000008001044                hard_handler
-                0x0000000008001044                TIM1_UP_IRQ_handler
-                0x0000000008001044                DMA2_S2_IRQ_handler
-                0x0000000008001044                DMA1_S6_IRQ_handler
-                0x0000000008001044                FPU_IRQ_handler
-                0x0000000008001044                I2C1_ER_IRQ_handler
-                0x0000000008001044                EXTI2_IRQ_handler
-                0x0000000008001044                EXTI3_IRQ_handler
-                0x0000000008001044                DMA1_S3_IRQ_handler
-                0x0000000008001044                RCC_IRQ_handler
-                0x0000000008001044                DMA1_S1_IRQ_handler
-                0x0000000008001044                SPI2_IRQ_handler
-                0x0000000008001044                DMA1_S4_IRQ_handler
-                0x0000000008001044                EXTI15_IRQ_handler
-                0x0000000008001044                EXTI0_IRQ_handler
-                0x0000000008001044                DMA2_S7_IRQ_handler
-                0x0000000008001044                bus_handler
-                0x0000000008001044                USART2_IRQ_handler
-                0x0000000008001044                TIM1_BR_IRQ_handler
-                0x0000000008001044                SPI3_IRQ_handler
-                0x0000000008001044                SDIO_IRQ_handler
-                0x0000000008001044                TIM1_TC_IRQ_handler
-                0x0000000008001044                OTG_WKUP_IRQ_handler
-                0x0000000008001044                flash_IRQ_handler
-                0x0000000008001044                SPI4_IRQ_handler
-                0x0000000008001048                . = ALIGN (0x4)
- *fill*         0x0000000008001046        0x2 
+                0x00000000080010e4        0x2 p2_vtable.o
+                0x00000000080010e4                PVD_IRQ_handler
+                0x00000000080010e4                DMA1_S0_IRQ_handler
+                0x00000000080010e4                DMA2_S0_IRQ_handler
+                0x00000000080010e4                usage_handler
+                0x00000000080010e4                DMA2_S5_IRQ_handler
+                0x00000000080010e4                NMI_handler
+                0x00000000080010e4                I2C3_EV_IRQ_handler
+                0x00000000080010e4                pending_SV_handler
+                0x00000000080010e4                USART1_IRQ_handler
+                0x00000000080010e4                TIM1_CC_IRQ_handler
+                0x00000000080010e4                DMA2_S1_IRQ_handler
+                0x00000000080010e4                default_interrupt_handler
+                0x00000000080010e4                DMA1_S5_IRQ_handler
+                0x00000000080010e4                SPI1_IRQ_handler
+                0x00000000080010e4                DMA2_S4_IRQ_handler
+                0x00000000080010e4                I2C3_ER_IRQ_handler
+                0x00000000080010e4                OTG_IRQ_handler
+                0x00000000080010e4                TIM3_IRQ_handler
+                0x00000000080010e4                RTC_Alarm_IRQ_handler
+                0x00000000080010e4                RTC_IRQ_handler
+                0x00000000080010e4                I2C1_EV_IRQ_handler
+                0x00000000080010e4                DMA1_S2_IRQ_handler
+                0x00000000080010e4                EXTI4_IRQ_handler
+                0x00000000080010e4                ADC_IRQ_handler
+                0x00000000080010e4                MMF_handler
+                0x00000000080010e4                DMA1_S7_IRQ_handler
+                0x00000000080010e4                EXTI1_IRQ_handler
+                0x00000000080010e4                SVC_handler
+                0x00000000080010e4                SYSTick_handler
+                0x00000000080010e4                TIM5_IRQ_handler
+                0x00000000080010e4                DMA2_S6_IRQ_handler
+                0x00000000080010e4                TAMP_IRQ_handler
+                0x00000000080010e4                TIM2_IRQ_handler
+                0x00000000080010e4                DMA2_S3_IRQ_handler
+                0x00000000080010e4                USART6_IRQ_handler
+                0x00000000080010e4                hard_handler
+                0x00000000080010e4                TIM1_UP_IRQ_handler
+                0x00000000080010e4                DMA2_S2_IRQ_handler
+                0x00000000080010e4                DMA1_S6_IRQ_handler
+                0x00000000080010e4                FPU_IRQ_handler
+                0x00000000080010e4                I2C1_ER_IRQ_handler
+                0x00000000080010e4                EXTI2_IRQ_handler
+                0x00000000080010e4                EXTI3_IRQ_handler
+                0x00000000080010e4                DMA1_S3_IRQ_handler
+                0x00000000080010e4                RCC_IRQ_handler
+                0x00000000080010e4                DMA1_S1_IRQ_handler
+                0x00000000080010e4                SPI2_IRQ_handler
+                0x00000000080010e4                DMA1_S4_IRQ_handler
+                0x00000000080010e4                EXTI15_IRQ_handler
+                0x00000000080010e4                EXTI0_IRQ_handler
+                0x00000000080010e4                DMA2_S7_IRQ_handler
+                0x00000000080010e4                bus_handler
+                0x00000000080010e4                USART2_IRQ_handler
+                0x00000000080010e4                TIM1_BR_IRQ_handler
+                0x00000000080010e4                SPI3_IRQ_handler
+                0x00000000080010e4                SDIO_IRQ_handler
+                0x00000000080010e4                TIM1_TC_IRQ_handler
+                0x00000000080010e4                OTG_WKUP_IRQ_handler
+                0x00000000080010e4                flash_IRQ_handler
+                0x00000000080010e4                SPI4_IRQ_handler
+                0x00000000080010e8                . = ALIGN (0x4)
+ *fill*         0x00000000080010e6        0x2 
 
-.glue_7         0x0000000008001048        0x0
- .glue_7        0x0000000008001048        0x0 linker stubs
+.glue_7         0x00000000080010e8        0x0
+ .glue_7        0x00000000080010e8        0x0 linker stubs
 
-.glue_7t        0x0000000008001048        0x0
- .glue_7t       0x0000000008001048        0x0 linker stubs
+.glue_7t        0x00000000080010e8        0x0
+ .glue_7t       0x00000000080010e8        0x0 linker stubs
 
-.vfp11_veneer   0x0000000008001048        0x0
- .vfp11_veneer  0x0000000008001048        0x0 linker stubs
+.vfp11_veneer   0x00000000080010e8        0x0
+ .vfp11_veneer  0x00000000080010e8        0x0 linker stubs
 
-.v4_bx          0x0000000008001048        0x0
- .v4_bx         0x0000000008001048        0x0 linker stubs
+.v4_bx          0x00000000080010e8        0x0
+ .v4_bx         0x00000000080010e8        0x0 linker stubs
 
-.iplt           0x0000000008001048        0x0
- .iplt          0x0000000008001048        0x0 p2_vtable.o
+.iplt           0x00000000080010e8        0x0
+ .iplt          0x00000000080010e8        0x0 p2_vtable.o
 
-.rel.dyn        0x0000000008001048        0x0
- .rel.iplt      0x0000000008001048        0x0 p2_vtable.o
+.rel.dyn        0x00000000080010e8        0x0
+ .rel.iplt      0x00000000080010e8        0x0 p2_vtable.o
 
-.rodata         0x0000000008001048        0x0
-                0x0000000008001048                . = ALIGN (0x4)
+.rodata         0x00000000080010e8        0x0
+                0x00000000080010e8                . = ALIGN (0x4)
  *(.rodata)
  *(.rodata*)
-                0x0000000008001048                . = ALIGN (0x4)
-                0x0000000008001048                _sidata = .
+                0x00000000080010e8                . = ALIGN (0x4)
+                0x00000000080010e8                _sidata = .
 
-.data           0x0000000020000000        0xc load address 0x0000000008001048
+.data           0x0000000020000000        0xc load address 0x00000000080010e8
                 0x0000000020000000                . = ALIGN (0x4)
                 0x0000000020000000                _sdata = .
  *(.data)
@@ -243,10 +250,10 @@ LOAD main.o
                 0x000000002000000c                _edata = .
                 0x000000002000000c                . = ALIGN (0x4)
 
-.igot.plt       0x000000002000000c        0x0 load address 0x0000000008001054
+.igot.plt       0x000000002000000c        0x0 load address 0x00000000080010f4
  .igot.plt      0x000000002000000c        0x0 p2_vtable.o
 
-.bss            0x000000002000000c       0x24 load address 0x0000000008001054
+.bss            0x000000002000000c       0x24 load address 0x00000000080010f4
                 0x000000002000000c                . = ALIGN (0x4)
                 0x000000002000000c                _sbss = .
  *(.bss)
@@ -260,7 +267,7 @@ LOAD main.o
                 0x0000000020000030                _ebss = .
 
 .dynamic_allocations
-                0x0000000020000030      0x400 load address 0x0000000008001078
+                0x0000000020000030      0x400 load address 0x0000000008001118
                 0x0000000020000030                . = ALIGN (0x4)
                 0x0000000020000030                _ssystem_ram = .
                 0x0000000020000430                . = (. + _Min_Leftover_RAM)
@@ -280,43 +287,48 @@ OUTPUT(main.elf elf32-littlearm)
  .ARM.attributes
                 0x0000000000000087       0x33 timer/timer_pre.o
  .ARM.attributes
-                0x00000000000000ba       0x33 math/rand.o
+                0x00000000000000ba       0x33 timer/timer_enable.o
  .ARM.attributes
-                0x00000000000000ed       0x33 math/algebra.o
+                0x00000000000000ed       0x33 math/rand.o
  .ARM.attributes
-                0x0000000000000120       0x33 setup.o
+                0x0000000000000120       0x33 math/algebra.o
  .ARM.attributes
-                0x0000000000000153       0x33 main.o
+                0x0000000000000153       0x33 setup.o
+ .ARM.attributes
+                0x0000000000000186       0x33 main.o
 
 .comment        0x0000000000000000       0x31
  .comment       0x0000000000000000       0x31 io/gpio.o
                                          0x32 (size before relaxing)
  .comment       0x0000000000000031       0x32 io/io.o
  .comment       0x0000000000000031       0x32 timer/timer_pre.o
+ .comment       0x0000000000000031       0x32 timer/timer_enable.o
  .comment       0x0000000000000031       0x32 math/rand.o
  .comment       0x0000000000000031       0x32 math/algebra.o
  .comment       0x0000000000000031       0x32 setup.o
  .comment       0x0000000000000031       0x32 main.o
 
-.debug_info     0x0000000000000000     0x16ea
- .debug_info    0x0000000000000000      0x62e io/gpio.o
- .debug_info    0x000000000000062e      0x182 io/io.o
- .debug_info    0x00000000000007b0      0x67d timer/timer_pre.o
- .debug_info    0x0000000000000e2d       0xe5 math/rand.o
- .debug_info    0x0000000000000f12       0xd2 math/algebra.o
- .debug_info    0x0000000000000fe4      0x194 setup.o
- .debug_info    0x0000000000001178      0x572 main.o
+.debug_info     0x0000000000000000     0x1831
+ .debug_info    0x0000000000000000      0x646 io/gpio.o
+ .debug_info    0x0000000000000646      0x182 io/io.o
+ .debug_info    0x00000000000007c8      0x67d timer/timer_pre.o
+ .debug_info    0x0000000000000e45      0x12f timer/timer_enable.o
+ .debug_info    0x0000000000000f74       0xe5 math/rand.o
+ .debug_info    0x0000000000001059       0xd2 math/algebra.o
+ .debug_info    0x000000000000112b      0x194 setup.o
+ .debug_info    0x00000000000012bf      0x572 main.o
 
-.debug_abbrev   0x0000000000000000      0x7ab
+.debug_abbrev   0x0000000000000000      0x85c
  .debug_abbrev  0x0000000000000000      0x208 io/gpio.o
  .debug_abbrev  0x0000000000000208       0xb3 io/io.o
  .debug_abbrev  0x00000000000002bb      0x192 timer/timer_pre.o
- .debug_abbrev  0x000000000000044d       0x96 math/rand.o
- .debug_abbrev  0x00000000000004e3       0x78 math/algebra.o
- .debug_abbrev  0x000000000000055b       0xb0 setup.o
- .debug_abbrev  0x000000000000060b      0x1a0 main.o
+ .debug_abbrev  0x000000000000044d       0xb1 timer/timer_enable.o
+ .debug_abbrev  0x00000000000004fe       0x96 math/rand.o
+ .debug_abbrev  0x0000000000000594       0x78 math/algebra.o
+ .debug_abbrev  0x000000000000060c       0xb0 setup.o
+ .debug_abbrev  0x00000000000006bc      0x1a0 main.o
 
-.debug_aranges  0x0000000000000000       0xe0
+.debug_aranges  0x0000000000000000      0x100
  .debug_aranges
                 0x0000000000000000       0x20 io/gpio.o
  .debug_aranges
@@ -324,47 +336,53 @@ OUTPUT(main.elf elf32-littlearm)
  .debug_aranges
                 0x0000000000000040       0x20 timer/timer_pre.o
  .debug_aranges
-                0x0000000000000060       0x20 math/rand.o
+                0x0000000000000060       0x20 timer/timer_enable.o
  .debug_aranges
-                0x0000000000000080       0x20 math/algebra.o
+                0x0000000000000080       0x20 math/rand.o
  .debug_aranges
-                0x00000000000000a0       0x20 setup.o
+                0x00000000000000a0       0x20 math/algebra.o
  .debug_aranges
-                0x00000000000000c0       0x20 main.o
+                0x00000000000000c0       0x20 setup.o
+ .debug_aranges
+                0x00000000000000e0       0x20 main.o
 
-.debug_line     0x0000000000000000      0x718
- .debug_line    0x0000000000000000       0xd2 io/gpio.o
- .debug_line    0x00000000000000d2       0x99 io/io.o
- .debug_line    0x000000000000016b      0x102 timer/timer_pre.o
- .debug_line    0x000000000000026d       0x99 math/rand.o
- .debug_line    0x0000000000000306       0xa8 math/algebra.o
- .debug_line    0x00000000000003ae       0xd9 setup.o
- .debug_line    0x0000000000000487      0x291 main.o
+.debug_line     0x0000000000000000      0x7d2
+ .debug_line    0x0000000000000000       0xd7 io/gpio.o
+ .debug_line    0x00000000000000d7       0x99 io/io.o
+ .debug_line    0x0000000000000170      0x102 timer/timer_pre.o
+ .debug_line    0x0000000000000272       0xb5 timer/timer_enable.o
+ .debug_line    0x0000000000000327       0x99 math/rand.o
+ .debug_line    0x00000000000003c0       0xa8 math/algebra.o
+ .debug_line    0x0000000000000468       0xd9 setup.o
+ .debug_line    0x0000000000000541      0x291 main.o
 
-.debug_str      0x0000000000000000      0x710
- .debug_str     0x0000000000000000      0x337 io/gpio.o
-                                        0x42f (size before relaxing)
- .debug_str     0x0000000000000337       0x41 io/io.o
+.debug_str      0x0000000000000000      0x77c
+ .debug_str     0x0000000000000000      0x331 io/gpio.o
+                                        0x434 (size before relaxing)
+ .debug_str     0x0000000000000331       0x41 io/io.o
                                         0x153 (size before relaxing)
- .debug_str     0x0000000000000378      0x215 timer/timer_pre.o
+ .debug_str     0x0000000000000372      0x215 timer/timer_pre.o
                                         0x341 (size before relaxing)
- .debug_str     0x000000000000058d       0x4c math/rand.o
+ .debug_str     0x0000000000000587       0x72 timer/timer_enable.o
+                                        0x1a8 (size before relaxing)
+ .debug_str     0x00000000000005f9       0x4c math/rand.o
                                         0x154 (size before relaxing)
- .debug_str     0x00000000000005d9       0x2c math/algebra.o
+ .debug_str     0x0000000000000645       0x2c math/algebra.o
                                         0x135 (size before relaxing)
- .debug_str     0x0000000000000605       0x83 setup.o
+ .debug_str     0x0000000000000671       0x83 setup.o
                                         0x17a (size before relaxing)
- .debug_str     0x0000000000000688       0x88 main.o
+ .debug_str     0x00000000000006f4       0x88 main.o
                                         0x468 (size before relaxing)
 
-.debug_frame    0x0000000000000000      0x59c
- .debug_frame   0x0000000000000000      0x134 io/gpio.o
- .debug_frame   0x0000000000000134       0x84 io/io.o
- .debug_frame   0x00000000000001b8      0x298 timer/timer_pre.o
- .debug_frame   0x0000000000000450       0x58 math/rand.o
- .debug_frame   0x00000000000004a8       0x58 math/algebra.o
- .debug_frame   0x0000000000000500       0x34 setup.o
- .debug_frame   0x0000000000000534       0x68 main.o
+.debug_frame    0x0000000000000000      0x5f8
+ .debug_frame   0x0000000000000000      0x130 io/gpio.o
+ .debug_frame   0x0000000000000130       0x84 io/io.o
+ .debug_frame   0x00000000000001b4      0x298 timer/timer_pre.o
+ .debug_frame   0x000000000000044c       0x60 timer/timer_enable.o
+ .debug_frame   0x00000000000004ac       0x58 math/rand.o
+ .debug_frame   0x0000000000000504       0x58 math/algebra.o
+ .debug_frame   0x000000000000055c       0x34 setup.o
+ .debug_frame   0x0000000000000590       0x68 main.o
 
 .debug_ranges   0x0000000000000000       0x30
  .debug_ranges  0x0000000000000000       0x30 main.o

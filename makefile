@@ -1,5 +1,5 @@
 io = io/gpio.cpp io/io.cpp
-timer = timer/timer_pre.cpp timer/timer_src.cpp timer/timer_speed.cpp
+timer = timer/timer_pre.cpp timer/timer_src.cpp timer/timer_speed.cpp timer/timer_enable.cpp
 math = math/rand.cpp math/algebra.cpp
 src =  setup.cpp main.cpp
 TARGET = main
@@ -48,10 +48,10 @@ OBJS += $(C_SRC:.cpp=.o)
 all: $(TARGET).bin
 %.o: %.cpp
 	$(CC) -c $< -o $@ $(CFLAGS)
-	$(OD) -s $@
+	$(OD) -h $@
 %.o: %.S
 	$(CC) $< -o $@ $(ASFLAGS)
-	$(OD) -s $@
+	$(OD) -h $@
 $(TARGET).elf: $(OBJS)
 	$(CC) $^ -o $@ $(LFLAGS)
 $(TARGET).bin: $(TARGET).elf

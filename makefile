@@ -1,6 +1,7 @@
-io = io/gpio.cpp io/io.cpp
+io = io/gpio.cpp io/io.cpp io/analog.cpp
 timer = timer/timer_pre.cpp timer/timer_src.cpp timer/timer_speed.cpp timer/timer_enable.cpp
 math = math/rand.cpp math/algebra.cpp
+data_structures = data_structures/linkedList.cpp
 src =  setup.cpp main.cpp
 TARGET = main
 # Define the linker script location and chip architecture.
@@ -41,17 +42,15 @@ LFLAGS += -Wl,--gc-sections
 LFLAGS += --specs=nosys.specs
 LFLAGS += -T$(LSCRIPT)
 VECT_TBL = ./p2_vtable.S
-C_SRC = $(io) $(timer) $(math) $(src)
+C_SRC = $(io) $(timer) $(math) $(src) $(data_structures)
 OBJS = $(VECT_TBL:.S=.o)
 OBJS += $(C_SRC:.cpp=.o)
 .PHONY: all
 all: $(TARGET).bin
 %.o: %.cpp
 	$(CC) -c $< -o $@ $(CFLAGS)
-	$(OD) -h $@
 %.o: %.S
 	$(CC) $< -o $@ $(ASFLAGS)
-	$(OD) -h $@
 $(TARGET).elf: $(OBJS)
 	$(CC) $^ -o $@ $(LFLAGS)
 $(TARGET).bin: $(TARGET).elf

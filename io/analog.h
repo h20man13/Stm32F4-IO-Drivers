@@ -2,11 +2,19 @@
 #define ANALOG_H
 
 #include <stdint.h>
-#include "gpio.h"
+#include "io.h"
+#include "../data_structures/linkedList.h"
 
-typedef struct{
-  GPIO_Struct gpio;
-} ANALOG_Struct;
+template <typename T> class ANALOG{
+  public:
+  ANALOG();
+  ~ANALOG();
+  T read();
+  private:
+  void update_seq_regs(ANALOG*);
+  static linkedList<ANALOG> list;
+  uint32_t seq_number;
+  static T counts[16];
+};
 
-void Init_ANALOG(ANALOG_Struct*,Pin,);
 #endif

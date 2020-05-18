@@ -5,7 +5,7 @@
 #include "io.h"
 #include "../timer/timer_enable.h"
 
-static uint32_t counts[5] = {0,0,0,0,0};
+uint32_t GPIO::counts[5]{0,0,0,0,0};
 
 //sample gpio fuctions
 GPIO::GPIO(const GPIO_Addr addr, const GPIO_Pin p){

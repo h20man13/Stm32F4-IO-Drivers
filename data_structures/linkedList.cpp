@@ -23,7 +23,6 @@ template <class L> void linkedList<L>::remove(L* data){
             if((temp -> next).data == data)
             {
                 Node* save = temp -> next;
-                temp -> data = save -> data;
                 temp -> next = save -> next;
                 delete save;
                 break;

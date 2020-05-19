@@ -17,7 +17,7 @@ template <class T> ANALOG<T>::ANALOG(GPIO_Pin p){
     Analog_Gpio(gpioa, p);
     Analog_Gpio.Configure_MODER(input);
     Analog_Gpio.Configure_OTYPER(push_pull);
-    list.add(this);
+    list.add(this); //add to list to suntract sequence #s from the other objects so read operation still works
     uint32_t reg_val = p / 10;
     uint32_t over = p % 10;
     out(ADC_SMP1 + reg_val, 3, over * 3, 7); //set sampling spped to max
@@ -56,7 +56,7 @@ template <class T> ANALOG<T>::~ANALOG(){
     uint32_t cur = in(ADC_SQR1, 4, 20);
     cur--;
     out(ADC_SQR1, 4, 20, cur);
-    if(seq_number == 0){
+    if(seq_number == 0){ //none left
         clear(DMA_CR, 1, 0); //disable dma
         clear(ADC_CR2, 1, 0);
         clear(ADC_CR1, 1, 8); //scan bit set

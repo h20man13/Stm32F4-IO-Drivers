@@ -3,18 +3,21 @@
 
 #include <stdint.h>
 #include "io.h"
+#include "gpio.h"
+#include "../shared.h"
 #include "../data_structures/linkedList.h"
 
 template <typename T> class ANALOG{
   public:
-  ANALOG();
+  ANALOG(GPIO_Pin);
   ~ANALOG();
   T read();
   private:
   void update_seq_regs(ANALOG*);
-  static linkedList<ANALOG> list;
   uint32_t seq_number;
-  static T counts[16];
+  GPIO Analog_Gpio;
+  static linkedList<ANALOG> list;
+  static uint32_t counts[16];
 };
 
 #endif

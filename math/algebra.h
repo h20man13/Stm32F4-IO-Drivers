@@ -3,6 +3,6 @@
 
 #include <stdint.h>
 
-uint32_t log_2(uint32_t);
+double log_2(double);
 
 #endif

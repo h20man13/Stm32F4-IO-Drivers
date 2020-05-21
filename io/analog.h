@@ -16,7 +16,7 @@ template <typename T> class ANALOG{
   void update_seq_regs(ANALOG*);
   uint32_t seq_number;
   GPIO Analog_Gpio;
-  static linkedList<ANALOG> list;
+  static linkedList<ANALOG*> list;
   static uint32_t counts[16];
 };
 

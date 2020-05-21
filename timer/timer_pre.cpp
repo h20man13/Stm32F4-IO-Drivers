@@ -6,7 +6,7 @@ volatile static uint32_t* adc_point = (uint32_t*)0x40012300;
 
 const static pre pre_v;
 
-const static int log_2_v = log_2(2);
+const static double log_2_v = log_2(2);
 
 uint32_t Sample_Prescalar(uint32_t (pre::*func)() const){
     return (pre_v.*func)();
@@ -56,7 +56,7 @@ void pre::PLLN(uint32_t data) const{
 }
 
 void pre::PLLP(uint32_t data) const{
-  data = (log_2(data) - log_2_v) / log_2_v;
+  data = (uint32_t)((log_2(data) - log_2_v) / log_2_v);
   out(pll_point, 2, 16, data);
 }
 
@@ -68,17 +68,17 @@ void pre::AHB1(uint32_t data) const{
   if(data >= 64){
     data /= 2;
   }
-  data = (log_2(data) + log_2(1 << 7)) / log_2_v;
+  data = (uint32_t)((log_2(data) + log_2(1 << 7)) / log_2_v);
   out(pll_point, 4, 4, data);
 }
 
 void pre::APB1(uint32_t data) const{
-  data = (log_2(data) + log_2(1 << 3)) / log_2_v;
+  data = (uint32_t)((log_2(data) + log_2(1 << 3)) / log_2_v);
   out(pll_point, 3, 9, data);
 }
 
 void pre::APB2(uint32_t data) const{
-  data = log_2(data * (1 << 3)) / log_2_v;
+  data = (uint32_t)(log_2(data * (1 << 3)) / log_2_v);
   out(pll_point, 3, 12, data);
 }
 

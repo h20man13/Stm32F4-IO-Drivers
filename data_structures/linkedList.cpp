@@ -5,7 +5,7 @@ template <class L> struct linkedList<L>::Node{
     Node* next;
 };
 
-template <class L> void linkedList<L>::add(L* Data){
+template <class L> void linkedList<L>::add(L Data){
     Node* temp = root;
     while(temp -> next != (Node*)0){
         temp = temp -> next;
@@ -15,7 +15,7 @@ template <class L> void linkedList<L>::add(L* Data){
     (temp -> next).next = (Node*)0;
 }
 
-template <class L> void linkedList<L>::remove(L* data){
+template <class L> void linkedList<L>::remove(L data){
     Node* temp = root;
     if(root != (Node*)0)
     {
@@ -32,7 +32,7 @@ template <class L> void linkedList<L>::remove(L* data){
     }
 }
 
-template <class L> void linkedList<L>::list_func(void (*func)(L*)){
+template <class L> void linkedList<L>::list_func(void (*func)(L)){
     Node* temp = root;
     while(temp -> next != (Node*)0){
         (*func)(temp -> data);

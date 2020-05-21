@@ -56,7 +56,7 @@ int main()
       break;
     }
   }
-  uint32_t size = 1;
+  int size = 1;
   uint32_t time_Allowed = 1000000;
   GPIO* outputs[4];
   outputs[0] = &led1;

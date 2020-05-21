@@ -38,6 +38,7 @@ LFLAGS += -mthumb
 LFLAGS += -Wall
 LFLAGS += -Wl,-Map=$(TARGET).map
 LFLAGS += -nostdlib
+LFLAGS += -lgcc
 LFLAGS += -Wl,--gc-sections
 LFLAGS += --specs=nosys.specs
 LFLAGS += -T$(LSCRIPT)

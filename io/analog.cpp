@@ -1,6 +1,7 @@
 #include "analog.h"
 
 const static uint32_t* ADC_SQR1 = (uint32_t*)0x4001202C; //base seq addr
+const static uint32_t* ADC_SQR3 = (uint32_t*)0x40012034;
 const static uint32_t* ADC_SMP1 = (uint32_t*)0x4001200C;
 const static uint32_t* ADC_CR1 = (uint32_t*)0x40012004;
 const static uint32_t* ADC_CR2 = (uint32_t*)0x40012008;
@@ -23,7 +24,7 @@ template <class T> ANALOG<T>::ANALOG(GPIO_Pin p){
     out(ADC_SMP1 + reg_val, 3, over * 3, 7); //set sampling spped to max
     reg_val = seq_number / 6; //to get seq_Addr
     over = seq_number % 6; //to get location in seq_addr
-    out(ADC_SQR1 + reg_val, 5, over * 5, (uint32_t)p);
+    out(ADC_SQR3 - reg_val, 5, over * 5, (uint32_t)p);
     out(DMA_NDTR, 16, 0, seq_number);
     if(seq_number == 0){
         out(ADC_CR1, 1, 8, 1); //scan bit set
@@ -42,10 +43,10 @@ template <class T> ANALOG<T>::ANALOG(GPIO_Pin p){
 
 template <class T> void ANALOG<T>::update_seq_regs(ANALOG* list_object){
     if(seq_number < list_object -> seq_number){
-        uint32_t addr = seq_number / 5;
-        uint32_t sub_addr = seq_number % 5;
-        uint32_t storage = in(ADC_SQR1 + addr, 5, (sub_addr + 1) * 5);
-        out(ADC_SQR1 + addr, 5, sub_addr * 5, storage);
+        uint32_t addr = seq_number / 6;
+        uint32_t sub_addr = seq_number % 6;
+        uint32_t storage = in(ADC_SQR3 - addr, 5, (sub_addr + 1) * 5);
+        out(ADC_SQR3 - addr, 5, sub_addr * 5, storage);
         list_object -> seq_number--;
     }
 }

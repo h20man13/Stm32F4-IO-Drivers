@@ -1,7 +1,7 @@
 #include "io.h"
 
 void out(volatile uint32_t* const addr, const uint32_t size, const uint32_t shift, const uint32_t data){
-  if(data < 1 << size){
+  if(data < (uint32_t)(1 << size)){
     clear(addr, size, shift);
     *addr |= (data << shift);
   }

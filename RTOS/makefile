@@ -1,12 +1,12 @@
-SRCDIR:=./src
-LDIR:=./lib
-ODIR:=./obj
-IDIR:=./include
-BDIR:=./bin
-TARGET:=main
+SRCDIR := ./src
+LDIR := ./lib
+ODIR := ./obj
+IDIR := ./include
+BDIR := ./bin
+TARGET := main
 # Define the linker script location and chip architecture.
-LSCRIPT:=stm32f401.ld
-MCU_SPEC:=cortex-m4
+LSCRIPT := stm32f401.ld
+MCU_SPEC := cortex-m4
 # Toolchain definitions (ARM bare metal defaults)
 TOOLCHAIN:=/usr/bin
 CC:=$(TOOLCHAIN)/arm-none-eabi-g++
@@ -16,11 +16,11 @@ OC:=$(TOOLCHAIN)/arm-none-eabi-objcopy
 OD:=$(TOOLCHAIN)/arm-none-eabi-objdump
 OS:=$(TOOLCHAIN)/arm-none-eabi-size
 # Assembly directives.
-ASFLAGS += -mcpu=$(MCU_SPEC)
+ASFLAGS +=-mcpu=$(MCU_SPEC)
 ASFLAGS += -mthumb
 ASFLAGS += -Wall
 # C compilation directives
-CFLAGS += -mcpu=$(MCU_SPEC)
+CFLAGS +=-mcpu=$(MCU_SPEC)
 CFLAGS += -mthumb
 CFLAGS += -fno-exceptions
 CFLAGS += -fno-rtti
@@ -41,19 +41,19 @@ LFLAGS += -Wl,--gc-sections
 LFLAGS += --specs=nosys.specs
 LFLAGS += -T$(LDIR)/$(LSCRIPT)
 
-VECT_TBL:=./$(LDIR)/p2_vtable.S
-LOADER:=./$(LDIR)/setup.cpp
-SRC:=$(wildcard $(SRCDIR)/%.cpp)
+VECT_TBL := ./$(LDIR)/p2_vtable.S
+LOADER := ./$(LDIR)/setup.cpp
+SRC := $(wildcard $(SRCDIR)/*.cpp)
 
-OBJS += $($(LOADER):.cpp=.o)
-OBJS += $($(VECT_TBL):.S=.o)
-OBJS += $($(SRC):$(SRCDIR)/%.cpp=$(ODIR)/%.o)
+OBJS := $($(LOADER):$(LDIR)/%.cpp=$(ODIR)/%.o) $($(VECT_TBL):$(LDIR)/%.S=$(ODIR)/%.o) $($(SRC):$(SRCDIR)/%.cpp=$(ODIR)/%.o)
 
-.PHONY: all
-all: $(BDIR)/$(TARGET).bin
-%.o: %.S
+$(ODIR)/%.o: $(LDIR)/%.S
 	$(CC) -c $< -o $@ $(ASFLAGS)
-%.o: %.cpp
+$(ODIR)/%.o: $(LDIR)/%.cpp
+	$(CC) -c $< -o $@ $(CFLAGS)
+$(ODIR)/%.o: $(SRCDIR)/%.S
+	$(CC) -c $< -o $@ $(ASFLAGS)
+$(ODIR)/%.o: $(SRCDIR)/%.cpp
 	$(CC) -c $< -o $@ $(CFLAGS)
 $(BDIR)/$(TARGET).elf: $(OBJS)
 	$(CC) $^ -o $@ $(LFLAGS)
@@ -62,11 +62,4 @@ $(BDIR)/$(TARGET).bin: $(BDIR)/$(TARGET).elf
 	$(OS) $<
 .PHONY: clean
 clean:
-	rm -f $(OBJS)
-	rm -f $(TARGET).elf
-	rm -f ./*~
-	rm -f ./*/*#
-	rm -f ./*/*~
-	rm -f ./*#
-	rm -f $(TARGET).bin
-	rm -f $(TARGET).map
+	rm -f $(OBJS) $(BDIR)/$(TARGET).elf ../*/*~ ./*/*# ./*/*~ ../*/*# $(BDIR)/$(TARGET).bin $(BDIR)/$(TARGET).map

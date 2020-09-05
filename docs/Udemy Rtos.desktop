@@ -1,0 +1,24 @@
+[Desktop Entry]
+Version=1.0
+Name=Firefox Web Browser
+Comment=Browse the World Wide Web
+GenericName=Web Browser
+Keywords=Internet;WWW;Browser;Web;Explorer
+Exec=firefox %https://www.udemy.com/?utm_source=adwords-brand&utm_medium=udemyads&utm_campaign=Brand-Udemy_la.EN_cc.US&utm_term=_._ag_78616515599_._ad_388789121978_._de_c_._dm__._pl__._ti_kwd-310556426868_._li_9016102_._pd__._&utm_term=_._pd__._kw_udemy_._&matchtype=e&gclid=CjwKCAiAob3vBRAUEiwAIbs5TjLZZIGeZUJcpb6fwdOg7gN8a0RdZK4cxzOpf0dYeHBHr-0H_IKjpxoCOg0QAvD_BwE
+Terminal=false
+X-MultipleArgs=false
+Type=Application
+Icon=firefox
+Categories=GNOME;GTK;Network;WebBrowser;
+MimeType=text/html;text/xml;application/xhtml+xml;application/xml;application/rss+xml;application/rdf+xml;image/gif;image/jpeg;image/png;x-scheme-handler/http;x-scheme-handler/https;x-scheme-handler/ftp;x-scheme-handler/chrome;video/webm;application/x-xpinstall;
+StartupNotify=true
+Actions=new-window;new-private-window;
+Name[en_US]=Udemy Rtos
+
+[Desktop Action new-window]
+Name=Open a New Window
+Exec=firefox -new-window
+
+[Desktop Action new-private-window]
+Name=Open a New Private Window
+Exec=firefox -private-window

@@ -2,7 +2,8 @@ SRCDIR:=./src
 LDIR:=./lib
 ODIR:=./obj
 IDIR:=./include
-TARGET:=./main
+BDIR:=./bin
+TARGET:=main
 # Define the linker script location and chip architecture.
 LSCRIPT:=stm32f401.ld
 MCU_SPEC:=cortex-m4
@@ -15,7 +16,6 @@ OC:=$(TOOLCHAIN)/arm-none-eabi-objcopy
 OD:=$(TOOLCHAIN)/arm-none-eabi-objdump
 OS:=$(TOOLCHAIN)/arm-none-eabi-size
 # Assembly directives.
-ASFLAGS += -c
 ASFLAGS += -mcpu=$(MCU_SPEC)
 ASFLAGS += -mthumb
 ASFLAGS += -Wall
@@ -39,20 +39,25 @@ LFLAGS += -nostdlib
 LFLAGS += -lgcc
 LFLAGS += -Wl,--gc-sections
 LFLAGS += --specs=nosys.specs
-LFLAGS += -T./$(LDIR)/$(LSCRIPT)
+LFLAGS += -T$(LDIR)/$(LSCRIPT)
 
 VECT_TBL:=./$(LDIR)/p2_vtable.S
+LOADER:=./$(LDIR)/setup.cpp
 SRC:=$(wildcard $(SRCDIR)/%.cpp)
-OBJS = $(VECT_TBL:%.S=%.o)
+
+OBJS += $($(LOADER):.cpp=.o)
+OBJS += $($(VECT_TBL):.S=.o)
 OBJS += $($(SRC):$(SRCDIR)/%.cpp=$(ODIR)/%.o)
 
 .PHONY: all
-all: $(TARGET).bin
+all: $(BDIR)/$(TARGET).bin
+%.o: %.S
+	$(CC) -c $< -o $@ $(ASFLAGS)
 %.o: %.cpp
 	$(CC) -c $< -o $@ $(CFLAGS)
-$(TARGET).elf: $(OBJS)
+$(BDIR)/$(TARGET).elf: $(OBJS)
 	$(CC) $^ -o $@ $(LFLAGS)
-$(TARGET).bin: $(TARGET).elf
+$(BDIR)/$(TARGET).bin: $(BDIR)/$(TARGET).elf
 	$(OC) -S -O binary $< $@
 	$(OS) $<
 .PHONY: clean

@@ -1,7 +1,7 @@
 #include <stdbool.h>
 
-#include "io/gpio.h"
-#include "math/rand.h"
+#include "gpio.h"
+#include "rand.h"
 
 void sleep(uint32_t f)
 {

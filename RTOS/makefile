@@ -26,7 +26,7 @@ CFLAGS += -fno-exceptions
 CFLAGS += -fno-rtti
 CFLAGS += -Wall
 CFLAGS += -g
-CFLAGS += -I./*/
+CFLAGS += -I$(IDIR)
 # (Set system to ignore semihosted junk)
 CFLAGS += --specs=nosys.specs
 # Linker directives.
@@ -40,10 +40,12 @@ LFLAGS += -lgcc
 LFLAGS += -Wl,--gc-sections
 LFLAGS += --specs=nosys.specs
 LFLAGS += -T./$(LDIR)/$(LSCRIPT)
+
 VECT_TBL:=./$(LDIR)/p2_vtable.S
-SRC:=$(wildcard ./src/%.cpp)
-OBJS = $(VECT_TBL:.S=.o)
-OBJS += $(SRC:.cpp=.o)
+SRC:=$(wildcard $(SRCDIR)/%.cpp)
+OBJS = $(VECT_TBL:%.S=%.o)
+OBJS += $($(SRC):$(SRCDIR)/%.cpp=$(ODIR)/%.o)
+
 .PHONY: all
 all: $(TARGET).bin
 %.o: %.cpp

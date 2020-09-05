@@ -3,7 +3,7 @@
 
 #include "gpio.h"
 #include "io.h"
-#include "../timer/timer_enable.h"
+#include "timer_enable.h"
 
 uint32_t GPIO::counts[5]{0,0,0,0,0};
 

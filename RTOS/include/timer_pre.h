@@ -2,8 +2,8 @@
 #define TIMER_PRE
 
 #include <stdint.h>
-#include "../io/io.h"
-#include "../math/algebra.h"
+#include "io.h"
+#include "algebra.h"
 
 class pre{
     public:

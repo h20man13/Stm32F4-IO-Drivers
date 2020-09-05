@@ -4,8 +4,8 @@
 #include <stdint.h>
 #include "io.h"
 #include "gpio.h"
-#include "../shared.h"
-#include "../data_structures/linkedList.h"
+#include "shared.h"
+#include "linkedList.h"
 
 template <typename T> class ANALOG{
   public:

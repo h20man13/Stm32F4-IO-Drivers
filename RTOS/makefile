@@ -34,7 +34,7 @@ LFLAGS += -mcpu=$(MCU_SPEC)
 LFLAGS += --static
 LFLAGS += -mthumb
 LFLAGS += -Wall
-LFLAGS += -Wl,-Map=$(TARGET).map
+LFLAGS += -Wl,-Map=$(BDIR)/$(TARGET).map
 LFLAGS += -nostdlib
 LFLAGS += -lgcc
 LFLAGS += -Wl,--gc-sections

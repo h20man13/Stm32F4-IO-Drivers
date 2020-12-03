@@ -1,0 +1,7 @@
+new -s RTOS-DEV-CONSOLE -n OCD 'OPENOCD-LOG'
+unbind C-b
+set -g prefix `
+set -g mouse on
+set-option -g allow-rename off
+neww -n GDB 'CONNECT-DEBUG'
+neww -n bash 'GOTO-MAIN-DIR'
